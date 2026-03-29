@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Coding 1.1 — Scott's Scholar Supper Series</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-paper: #F8F7F4;
+      --color-ink: #121212;
+      --color-clay: #B08D78;
+      --color-bg: #e0ddd8;
+      --color-error: #D97755;
+      --color-border: rgba(18, 18, 18, 0.08);
+      --color-muted: rgba(18, 18, 18, 0.55);
+      --font-serif: 'Fraunces', serif;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--color-ink); color: var(--color-ink); font-family: var(--font-sans); overflow: hidden; height: 100vh; width: 100vw; }
+    body::after { content: ''; position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0.03; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+    .slide { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--color-paper); opacity: 0; transform: translateY(12px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; pointer-events: none; overflow: hidden; }
+    .slide.active { opacity: 1; transform: translateY(0); pointer-events: all; z-index: 10; }
+    .slide.exit { opacity: 0; transform: translateY(-8px); transition: opacity 0.3s ease-in, transform 0.3s ease-in; }
+    .slide-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; border-bottom: 1px solid var(--color-border); }
+    .slide-header .mono-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-muted); }
+    .slide-header .slide-number { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--color-clay); }
+    .slide-footer { display: flex; justify-content: space-between; align-items: center; padding: 16px 48px; border-top: 1px solid var(--color-border); }
+    .slide-footer .mono-label { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-muted); }
+    .slide-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px; position: relative; }
+    .corner-accents { position: absolute; inset: 32px; pointer-events: none; }
+    .corner-accents::before { content: ''; position: absolute; top: 0; left: 0; width: 16px; height: 16px; border-top: 1px solid var(--color-clay); border-left: 1px solid var(--color-clay); }
+    .corner-accents::after { content: ''; position: absolute; bottom: 0; right: 0; width: 16px; height: 16px; border-bottom: 1px solid var(--color-clay); border-right: 1px solid var(--color-clay); }
+
+    h1 { font-family: var(--font-serif); font-weight: 300; font-size: 64px; line-height: 1.05; letter-spacing: -0.02em; }
+    h2 { font-family: var(--font-serif); font-weight: 300; font-size: 42px; line-height: 1.15; letter-spacing: -0.02em; }
+    h3 { font-family: var(--font-serif); font-weight: 400; font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
+    .clay { color: var(--color-clay); }
+    .italic { font-style: italic; }
+    .mono-sm { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-muted); }
+    .body-text { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; max-width: 540px; }
+    .body-text.muted-text { color: var(--color-muted); }
+    .divider { height: 1px; background: linear-gradient(90deg, var(--color-clay), transparent); width: 64px; }
+
+    /* Title */
+    .slide-title-layout { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+    .slide-title-layout h1 { font-size: 72px; }
+    .slide-title-layout .subtitle { font-family: var(--font-sans); font-size: 15px; color: var(--color-muted); letter-spacing: 0.02em; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-in { animation: fadeInUp 0.5s ease-out forwards; }
+    .delay-1{animation-delay:.1s;opacity:0}.delay-2{animation-delay:.2s;opacity:0}.delay-3{animation-delay:.3s;opacity:0}.delay-4{animation-delay:.4s;opacity:0}.delay-5{animation-delay:.5s;opacity:0}
+
+    /* Abstraction Stack */
+    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; width: 100%; max-width: 1100px; align-items: center; }
+    .abstraction-stack { display: flex; flex-direction: column; position: relative; }
+    .stack-layer { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border: 1px solid var(--color-border); margin-top: -1px; position: relative; z-index: 1; }
+    .stack-layer:first-child { margin-top: 0; }
+    .stack-layer .layer-num { font-family: var(--font-mono); font-size: 9px; color: var(--color-muted); letter-spacing: 0.12em; min-width: 20px; transition: all 0.5s ease; }
+    .stack-layer .layer-name { font-family: var(--font-serif); font-size: 18px; font-weight: 300; letter-spacing: -0.02em; flex: 1; transition: all 0.5s ease; }
+    .stack-layer .layer-arrow { font-family: var(--font-mono); font-size: 10px; color: var(--color-clay); opacity: 0.5; }
+    .stack-layer.highlighted { background: var(--color-ink); border-color: var(--color-ink); z-index: 2; transition: transform 0.7s cubic-bezier(0.4,0,0.2,1); }
+    .stack-layer.highlighted .layer-name { color: var(--color-paper); }
+    .stack-layer.highlighted .layer-num { color: var(--color-clay); }
+    /* NL insert layer - hidden initially */
+    .nl-insert { max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; overflow: hidden; background: var(--color-clay); border-color: var(--color-clay); z-index: 3; transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1), padding 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease 0.15s; }
+    .nl-insert.visible { max-height: 56px; padding-top: 14px; padding-bottom: 14px; opacity: 1; }
+    .nl-insert .layer-name { color: var(--color-paper); font-weight: 400; }
+    .nl-insert .layer-num { color: rgba(255,255,255,0.6); }
+    @keyframes syncPulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+    .pulse { animation: syncPulse 1.5s ease-in-out infinite; }
+    .stack-bracket { position: absolute; right: -40px; top: 0; bottom: 0; width: 20px; border: 1px solid var(--color-clay); border-left: none; opacity: 0.4; }
+    .stack-bracket-label { position: absolute; right: -120px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-clay); white-space: nowrap; writing-mode: vertical-rl; }
+
+    /* Bio Neuron slide */
+    .bio-neuron-layout { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; max-width: 900px; }
+    .bio-neuron-layout .bio-caption { font-size: 14px; line-height: 1.6; color: var(--color-muted); text-align: center; max-width: 680px; }
+    .bio-neuron-layout .bio-caption strong { color: var(--color-ink); font-weight: 500; }
+
+    /* NN Animation slide */
+    .nn-anim-layout { display: flex; flex-direction: column; align-items: center; gap: 32px; width: 100%; max-width: 780px; }
+    .nn-bottom-row { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .nn-step { display: flex; align-items: center; gap: 8px; opacity: 0.3; transition: opacity 0.3s ease; }
+    .nn-step.step-active { opacity: 1; }
+    .nn-step-num { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-ink); font-family: var(--font-mono); font-size: 10px; transition: background 0.3s, color 0.3s, border-color 0.3s; }
+    .nn-step.step-active .nn-step-num { background: var(--color-clay); border-color: var(--color-clay); color: var(--color-paper); }
+    .nn-step-text { font-family: var(--font-sans); font-size: 12px; color: var(--color-muted); }
+    .nn-step-arrow { font-family: var(--font-mono); font-size: 12px; color: var(--color-clay); opacity: 0.4; }
+    .nn-hint { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-clay); opacity: 0.6; }
+
+    /* Why Matter slide */
+    .slide-why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; width: 100%; max-width: 1100px; align-items: start; }
+    .slide-why-left { display: flex; flex-direction: column; gap: 28px; }
+    .insight-card { background: var(--color-ink); padding: 28px; position: relative; }
+    .insight-card p { color: rgba(248,247,244,0.6); font-size: 14px; line-height: 1.6; }
+    .insight-card .ca-tl::before { content:''; position: absolute; top: 8px; left: 8px; width: 12px; height: 12px; border-top: 1px solid var(--color-clay); border-left: 1px solid var(--color-clay); }
+    .insight-card .ca-br::after { content:''; position: absolute; bottom: 8px; right: 8px; width: 12px; height: 12px; border-bottom: 1px solid var(--color-clay); border-right: 1px solid var(--color-clay); }
+
+    /* Learning analogy (synapse comparison) */
+    .synapse-layout { display: flex; flex-direction: column; align-items: center; gap: 24px; width: 100%; max-width: 900px; }
+    .synapse-row { display: flex; align-items: center; gap: 24px; justify-content: center; }
+    .synapse-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .synapse-label { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-muted); }
+    .synapse-label.trained { color: var(--color-clay); }
+    .synapse-arrow { display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: var(--font-mono); color: var(--color-clay); }
+    .synapse-caption { font-size: 13px; line-height: 1.55; color: var(--color-muted); text-align: center; max-width: 600px; }
+
+    /* Principles */
+    .principles-layout { display: flex; flex-direction: column; align-items: center; gap: 36px; width: 100%; max-width: 720px; }
+    .principles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; }
+    .principle-card { padding: 24px; border: 1px solid var(--color-border); transition: border-color 0.3s; }
+    .principle-card:hover { border-color: rgba(176,141,120,0.3); }
+    .principle-card .pnum { font-family: var(--font-serif); font-size: 32px; font-weight: 300; color: var(--color-clay); font-style: italic; line-height: 1; margin-bottom: 12px; }
+    .principle-card h4 { font-family: var(--font-serif); font-weight: 400; font-size: 17px; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .principle-card p { font-size: 13px; line-height: 1.55; color: var(--color-muted); }
+
+    /* Nav */
+    .nav-dots { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 50; }
+    .nav-dot { width: 8px; height: 8px; border: 1px solid var(--color-ink); background: transparent; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+    .nav-dot.active { background: var(--color-clay); border-color: var(--color-clay); }
+    .nav-hint { position: fixed; bottom: 24px; right: 48px; font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(248,247,244,0.3); z-index: 50; }
+  </style>
+</head>
+<body>
+
+<!-- ===== SLIDE 0: Title ===== -->
+<div class="slide active" id="slide-0">
+  <div class="slide-header"><span class="mono-label">Scott's Scholar Supper Series</span><span class="slide-number">2026</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div class="slide-title-layout">
+      <div class="mono-sm animate-in delay-1">Workshop 1.1</div>
+      <div class="divider animate-in delay-2" style="margin:0 auto"></div>
+      <h1 class="animate-in delay-3"><span class="clay italic">Vibe</span> Coding</h1>
+      <p class="subtitle animate-in delay-4">Building with AI &mdash; Understanding the foundations</p>
+      <div class="divider animate-in delay-5" style="margin:0 auto"></div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Press &rarr; to begin</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
+<!-- ===== SLIDE 1: Abstraction Stack ===== -->
+<div class="slide" id="slide-1">
+  <div class="slide-header"><span class="mono-label">The Paradigm Shift</span><span class="slide-number">01 / 06</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div class="grid-2col">
+      <div>
+        <div class="mono-sm">The new reality</div>
+        <div class="divider"></div>
+        <h1 style="margin-top:12px">It's never been easier to <span class="clay italic">build.</span></h1>
+        <p class="body-text muted-text" style="margin-top:12px">For decades, building software required deep expertise in programming languages. AI has added a new layer of abstraction &mdash; and with it, anyone who can describe an idea can now build it.</p>
+      </div>
+      <div style="position:relative">
+        <div class="abstraction-stack" id="stack">
+          <div class="stack-layer highlighted" id="layer-app">
+            <span class="layer-num" id="app-num">05</span>
+            <span class="layer-name">Applications</span>
+          </div>
+          <!-- NL inserts here between programming languages and applications -->
+          <div class="stack-layer nl-insert" id="layer-nl">
+            <span class="layer-num">05</span>
+            <span class="layer-name">Natural Language <span class="pulse" style="font-size:10px;font-family:var(--font-mono);letter-spacing:0.12em;opacity:0.7">&nbsp;NEW</span></span>
+          </div>
+          <div class="stack-layer">
+            <span class="layer-num">04</span>
+            <span class="layer-name">Programming Languages</span>
+            <span class="layer-arrow">&darr;</span>
+          </div>
+          <div class="stack-layer">
+            <span class="layer-num">03</span>
+            <span class="layer-name">Operating System</span>
+            <span class="layer-arrow">&darr;</span>
+          </div>
+          <div class="stack-layer">
+            <span class="layer-num">02</span>
+            <span class="layer-name">Machine Code</span>
+            <span class="layer-arrow">&darr;</span>
+          </div>
+          <div class="stack-layer">
+            <span class="layer-num">01</span>
+            <span class="layer-name">Hardware</span>
+          </div>
+        </div>
+        <div class="stack-bracket"></div>
+        <div class="stack-bracket-label">Layers of Abstraction</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1 &mdash; Press &rarr;</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
+<!-- ===== SLIDE 2: Biological Neuron / Baby Analogy ===== -->
+<div class="slide" id="slide-2">
+  <div class="slide-header"><span class="mono-label">The Baby Analogy</span><span class="slide-number">02 / 06</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div class="bio-neuron-layout">
+      <div style="text-align:center">
+        <div class="mono-sm" style="margin-bottom:12px">How learning works</div>
+        <div class="divider" style="margin:0 auto 16px"></div>
+        <h2>The <span class="clay italic">Neuron</span> &mdash; Nature's Learning Machine</h2>
+      </div>
+
+      <svg viewBox="0 0 700 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+        <!-- Dendrites -->
+        <g opacity="0.7">
+          <path d="M120 50 Q155 85 190 110" stroke="#B08D78" stroke-width="2" fill="none"/>
+          <path d="M100 80 Q140 95 190 115" stroke="#B08D78" stroke-width="1.5" fill="none"/>
+          <path d="M110 35 Q145 60 175 85" stroke="#B08D78" stroke-width="1.2" fill="none"/>
+          <line x1="118" y1="52" x2="108" y2="42" stroke="#B08D78" stroke-width="0.8"/><circle cx="108" cy="42" r="2" fill="#B08D78"/>
+          <line x1="128" y1="60" x2="120" y2="48" stroke="#B08D78" stroke-width="0.8"/><circle cx="120" cy="48" r="2" fill="#B08D78"/>
+          <line x1="105" y1="78" x2="94" y2="72" stroke="#B08D78" stroke-width="0.8"/><circle cx="94" cy="72" r="2" fill="#B08D78"/>
+          <line x1="114" y1="36" x2="106" y2="26" stroke="#B08D78" stroke-width="0.8"/><circle cx="106" cy="26" r="2" fill="#B08D78"/>
+
+          <path d="M80 150 Q130 140 190 135" stroke="#B08D78" stroke-width="2" fill="none"/>
+          <path d="M90 130 Q135 128 190 130" stroke="#B08D78" stroke-width="1.3" fill="none"/>
+          <line x1="88" y1="132" x2="78" y2="124" stroke="#B08D78" stroke-width="0.8"/><circle cx="78" cy="124" r="2" fill="#B08D78"/>
+          <line x1="96" y1="140" x2="84" y2="138" stroke="#B08D78" stroke-width="0.8"/><circle cx="84" cy="138" r="2" fill="#B08D78"/>
+
+          <path d="M105 215 Q150 200 190 175" stroke="#B08D78" stroke-width="2" fill="none"/>
+          <path d="M120 230 Q160 210 190 180" stroke="#B08D78" stroke-width="1.3" fill="none"/>
+          <path d="M85 210 Q125 205 165 190" stroke="#B08D78" stroke-width="1" fill="none"/>
+          <line x1="108" y1="213" x2="96" y2="218" stroke="#B08D78" stroke-width="0.8"/><circle cx="96" cy="218" r="2" fill="#B08D78"/>
+          <line x1="118" y1="225" x2="110" y2="234" stroke="#B08D78" stroke-width="0.8"/><circle cx="110" cy="234" r="2" fill="#B08D78"/>
+        </g>
+
+        <!-- Soma -->
+        <ellipse cx="240" cy="145" rx="55" ry="60" fill="rgba(176,141,120,0.07)" stroke="#B08D78" stroke-width="1.8"/>
+        <!-- Nucleus -->
+        <circle cx="240" cy="145" r="24" fill="rgba(176,141,120,0.1)" stroke="rgba(176,141,120,0.5)" stroke-width="1"/>
+        <circle cx="236" cy="141" r="8" fill="rgba(176,141,120,0.18)" stroke="rgba(176,141,120,0.35)" stroke-width="0.5"/>
+
+        <!-- Axon hillock -->
+        <path d="M295 145 Q315 145 340 148" stroke="#B08D78" stroke-width="2.5" fill="none"/>
+
+        <!-- Axon -->
+        <line x1="340" y1="148" x2="580" y2="168" stroke="rgba(18,18,18,0.15)" stroke-width="2"/>
+        <!-- Myelin sheaths -->
+        <ellipse cx="375" cy="152" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(2 375 152)"/>
+        <ellipse cx="430" cy="157" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 430 157)"/>
+        <ellipse cx="485" cy="162" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 485 162)"/>
+        <ellipse cx="540" cy="166" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 540 166)"/>
+        <!-- Nodes of Ranvier -->
+        <circle cx="402" cy="154" r="2.5" fill="#B08D78" opacity="0.5"/>
+        <circle cx="457" cy="159" r="2.5" fill="#B08D78" opacity="0.5"/>
+        <circle cx="512" cy="164" r="2.5" fill="#B08D78" opacity="0.5"/>
+        <circle cx="567" cy="168" r="2.5" fill="#B08D78" opacity="0.5"/>
+
+        <!-- Axon terminals -->
+        <g transform="translate(572,162)">
+          <line x1="0" y1="6" x2="22" y2="-8" stroke="#B08D78" stroke-width="1.2"/>
+          <line x1="0" y1="6" x2="26" y2="6" stroke="#B08D78" stroke-width="1.2"/>
+          <line x1="0" y1="6" x2="22" y2="20" stroke="#B08D78" stroke-width="1.2"/>
+          <circle cx="24" cy="-9" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
+          <circle cx="28" cy="6" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
+          <circle cx="24" cy="21" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
+          <circle cx="31" cy="-7" r="1.2" fill="#B08D78" opacity="0.6"/>
+          <circle cx="33" cy="-4" r="1.2" fill="#B08D78" opacity="0.4"/>
+          <circle cx="35" cy="7" r="1.2" fill="#B08D78" opacity="0.6"/>
+          <circle cx="33" cy="10" r="1.2" fill="#B08D78" opacity="0.4"/>
+          <circle cx="31" cy="23" r="1.2" fill="#B08D78" opacity="0.6"/>
+          <circle cx="33" cy="20" r="1.2" fill="#B08D78" opacity="0.4"/>
+        </g>
+
+        <!-- Signal arrow -->
+        <path d="M310 195 L555 210" stroke="rgba(176,141,120,0.3)" stroke-width="1" stroke-dasharray="5 3"/>
+        <polygon points="555,210 548,206 549,215" fill="rgba(176,141,120,0.3)"/>
+
+        <!-- Labels -->
+        <text x="95" y="22" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">DENDRITES</text>
+        <text x="95" y="32" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(receive input signals)</text>
+        <text x="205" y="240" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">SOMA</text>
+        <text x="190" y="250" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(processes &amp; integrates)</text>
+        <text x="420" y="200" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">AXON</text>
+        <text x="400" y="210" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(transmits signal)</text>
+        <text x="580" y="200" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">SYNAPSE</text>
+        <text x="580" y="210" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(outputs to next neuron)</text>
+        <text x="410" y="138" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1" opacity="0.6">MYELIN SHEATH</text>
+        <text x="330" y="138" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1" opacity="0.6">AXON HILLOCK</text>
+        <!-- Dendritic spines callout -->
+        <text x="60" y="55" font-family="JetBrains Mono, monospace" font-size="6" fill="var(--color-muted)" letter-spacing="1" opacity="0.5">DENDRITIC SPINES</text>
+        <!-- Synaptic strength scale -->
+        <g transform="translate(80,270)">
+          <text x="0" y="0" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1">SYNAPTIC STRENGTH (WEIGHT)</text>
+          <line x1="0" y1="10" x2="40" y2="10" stroke="rgba(176,141,120,0.2)" stroke-width="0.5"/>
+          <line x1="48" y1="10" x2="88" y2="10" stroke="rgba(176,141,120,0.4)" stroke-width="1.2"/>
+          <line x1="96" y1="10" x2="136" y2="10" stroke="#B08D78" stroke-width="2.5"/>
+          <text x="0" y="22" font-family="Inter, sans-serif" font-size="7" fill="var(--color-muted)">weak</text>
+          <text x="120" y="22" font-family="Inter, sans-serif" font-size="7" fill="var(--color-muted)">strong</text>
+        </g>
+        <text x="420" y="280" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1" opacity="0.5">NODES OF RANVIER</text>
+      </svg>
+
+      <p class="bio-caption">Your neurons form connections called <strong>synapses</strong>. When you learn, certain synaptic pathways <strong>strengthen</strong> through repetition &mdash; a process called <strong>long-term potentiation (LTP)</strong>. A baby's neurons start with random synaptic weights. Through constant data &mdash; visual, auditory, sensory &mdash; the brain strengthens the right pathways and <strong>prunes</strong> the wrong ones. AI works the same way.</p>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
+<!-- ===== SLIDE 3: Artificial Neural Network + Backprop ===== -->
+<div class="slide" id="slide-3">
+  <div class="slide-header"><span class="mono-label">The Artificial Version</span><span class="slide-number">03 / 06</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div class="nn-anim-layout">
+      <div style="text-align:center">
+        <div class="mono-sm" style="margin-bottom:12px">Same principle, in a computer</div>
+        <div class="divider" style="margin:0 auto 16px"></div>
+        <h2>Training a Neural Network</h2>
+      </div>
+
+      <svg id="nn-svg" viewBox="0 0 600 280" fill="none" style="width:100%;max-width:600px">
+        <!-- Connections: input->hidden1 -->
+        <g id="conn-ih1" opacity="0.06">
+          <line x1="75" y1="40" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
+          <line x1="75" y1="80" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
+          <line x1="75" y1="120" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
+          <line x1="75" y1="160" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
+          <line x1="75" y1="200" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
+          <line x1="75" y1="240" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
+        </g>
+        <!-- hidden1->hidden2 -->
+        <g id="conn-h1h2" opacity="0.04">
+          <line x1="220" y1="40" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="40" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="40" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="40" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
+          <line x1="220" y1="80" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="80" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="80" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="80" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
+          <line x1="220" y1="120" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="120" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="120" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="120" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
+          <line x1="220" y1="160" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="160" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="160" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="160" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
+          <line x1="220" y1="200" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="200" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="200" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="200" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
+          <line x1="220" y1="240" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="240" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="240" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="240" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
+        </g>
+        <!-- hidden2->output -->
+        <g id="conn-h2o" opacity="0.04">
+          <line x1="360" y1="60" x2="475" y2="40" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="60" x2="475" y2="80" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="60" x2="475" y2="120" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="60" x2="475" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="60" x2="475" y2="200" stroke="#B08D78" stroke-width="0.5"/>
+          <line x1="360" y1="110" x2="475" y2="40" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="110" x2="475" y2="80" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="110" x2="475" y2="120" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="110" x2="475" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="110" x2="475" y2="200" stroke="#B08D78" stroke-width="0.5"/>
+          <line x1="360" y1="160" x2="475" y2="40" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="160" x2="475" y2="80" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="160" x2="475" y2="120" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="160" x2="475" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="160" x2="475" y2="200" stroke="#B08D78" stroke-width="0.5"/>
+          <line x1="360" y1="210" x2="475" y2="40" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="210" x2="475" y2="80" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="210" x2="475" y2="120" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="210" x2="475" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="210" x2="475" y2="200" stroke="#B08D78" stroke-width="0.5"/>
+        </g>
+        <g id="conn-trained" opacity="0">
+          <line x1="360" y1="110" x2="475" y2="120" stroke="#B08D78" stroke-width="2.5"/>
+          <line x1="360" y1="160" x2="475" y2="120" stroke="#B08D78" stroke-width="2.5"/>
+          <line x1="220" y1="120" x2="340" y2="110" stroke="#B08D78" stroke-width="2"/>
+          <line x1="220" y1="160" x2="340" y2="160" stroke="#B08D78" stroke-width="2"/>
+        </g>
+        <!-- Input nodes -->
+        <g id="input-nodes">
+          <rect x="30" y="26" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="43" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">0</text>
+          <rect x="30" y="66" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="83" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">1</text>
+          <rect x="30" y="106" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="123" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">2</text>
+          <rect x="30" y="146" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="163" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">3</text>
+          <rect x="30" y="186" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="203" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">4</text>
+          <rect x="30" y="226" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="243" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.2)" text-anchor="middle" class="nn-it">...</text>
+        </g>
+        <g id="hidden1-nodes">
+          <circle cx="210" cy="40" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          <circle cx="210" cy="80" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          <circle cx="210" cy="120" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          <circle cx="210" cy="160" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          <circle cx="210" cy="200" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          <circle cx="210" cy="240" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+        </g>
+        <g id="hidden2-nodes">
+          <circle cx="350" cy="60" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          <circle cx="350" cy="110" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          <circle cx="350" cy="160" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          <circle cx="350" cy="210" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+        </g>
+        <!-- Output wrong -->
+        <g id="output-wrong" opacity="0">
+          <rect x="465" y="28" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="43" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.12</text>
+          <rect x="465" y="68" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="83" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.08</text>
+          <rect x="465" y="108" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="123" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.15</text>
+          <rect x="465" y="148" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="163" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.20</text>
+          <rect x="465" y="188" width="55" height="22" fill="var(--color-error)" stroke="var(--color-error)" stroke-width="0.5"/><text x="492" y="203" font-family="JetBrains Mono,monospace" font-size="10" fill="#F8F7F4" text-anchor="middle" font-weight="500">0.45</text>
+          <text x="530" y="203" font-family="Fraunces,serif" font-size="10" fill="var(--color-error)" font-style="italic" font-weight="600">five</text>
+        </g>
+        <!-- Output correct -->
+        <g id="output-correct" opacity="0">
+          <rect x="465" y="28" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="43" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.02</text>
+          <rect x="465" y="68" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="83" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.03</text>
+          <rect x="465" y="108" width="55" height="22" fill="#B08D78" stroke="#B08D78" stroke-width="0.5"/><text x="492" y="123" font-family="JetBrains Mono,monospace" font-size="10" fill="#F8F7F4" text-anchor="middle" font-weight="500">0.91</text>
+          <rect x="465" y="148" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="163" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.01</text>
+          <rect x="465" y="188" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="203" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.01</text>
+          <text x="530" y="123" font-family="Fraunces,serif" font-size="10" fill="#B08D78" font-style="italic" font-weight="600">three</text>
+        </g>
+        <g id="nn-loss" opacity="0"><rect x="462" y="220" width="78" height="24" fill="none" stroke="var(--color-error)" stroke-width="1" stroke-dasharray="4 2"/><text x="501" y="236" font-family="JetBrains Mono,monospace" font-size="9" fill="var(--color-error)" text-anchor="middle" letter-spacing="1">LOSS: 0.73</text></g>
+        <g id="nn-bp-label" opacity="0"><text x="280" y="270" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" text-anchor="middle" letter-spacing="1.5">BACKPROPAGATION — ADJUSTING WEIGHTS</text></g>
+        <g id="nn-ok-label" opacity="0"><text x="280" y="270" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" text-anchor="middle" letter-spacing="1.5">WEIGHTS UPDATED — CORRECT OUTPUT</text></g>
+        <!-- Layer labels -->
+        <text x="47" y="16" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(18,18,18,0.35)" text-anchor="middle" letter-spacing="1.5">INPUT</text>
+        <text x="280" y="16" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(18,18,18,0.35)" text-anchor="middle" letter-spacing="1.5">HIDDEN LAYERS</text>
+        <text x="492" y="16" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(18,18,18,0.35)" text-anchor="middle" letter-spacing="1.5">OUTPUT</text>
+      </svg>
+
+      <div class="nn-bottom-row" id="nn-steps">
+        <div class="nn-step step-active" id="nn-step-1"><div class="nn-step-num">1</div><span class="nn-step-text">Feed data in</span></div>
+        <span class="nn-step-arrow">&rarr;</span>
+        <div class="nn-step" id="nn-step-2"><div class="nn-step-num">2</div><span class="nn-step-text">Random guess</span></div>
+        <span class="nn-step-arrow">&rarr;</span>
+        <div class="nn-step" id="nn-step-3"><div class="nn-step-num">3</div><span class="nn-step-text">Calculate error</span></div>
+        <span class="nn-step-arrow">&rarr;</span>
+        <div class="nn-step" id="nn-step-4"><div class="nn-step-num">4</div><span class="nn-step-text">Adjust weights</span></div>
+        <span class="nn-step-arrow">&rarr;</span>
+        <div class="nn-step" id="nn-step-5"><div class="nn-step-num" style="font-size:14px">&infin;</div><span class="nn-step-text">Repeat</span></div>
+      </div>
+      <div class="nn-hint" id="nn-hint">Press &rarr; to step through</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
+<!-- ===== SLIDE 4: Why Does This Matter ===== -->
+<div class="slide" id="slide-4">
+  <div class="slide-header"><span class="mono-label">The Takeaway</span><span class="slide-number">04 / 06</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:32px;max-width:680px;text-align:center">
+      <div class="mono-sm">Why does this matter?</div>
+      <div class="divider" style="margin:0 auto"></div>
+      <h1>AI is not <span class="clay italic">human.</span></h1>
+      <p class="body-text muted-text" style="text-align:center;max-width:560px">It's glorified statistics. It will confidently give wrong answers, lose context, and make things up. Understanding this is what separates effective builders from frustrated ones.</p>
+      <div class="insight-card" style="text-align:left;max-width:520px;width:100%">
+        <span class="ca-tl"></span><span class="ca-br"></span>
+        <div class="mono-sm" style="color:var(--color-clay);margin-bottom:12px">The Curse of Vibe Coding</div>
+        <p>Throwing prompts and hoping for the best. When it fails, you're stuck &mdash; you don't know what went wrong or how to fix it. The codebase becomes an incomprehensible mess. The goal of this workshop is to make sure you don't fall into that trap.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
+<!-- ===== SLIDE 5: Learning Analogy (Synapse Comparison) ===== -->
+<div class="slide" id="slide-5">
+  <div class="slide-header"><span class="mono-label">The Learning Analogy</span><span class="slide-number">05 / 06</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div class="synapse-layout">
+      <div style="text-align:center">
+        <div class="mono-sm" style="margin-bottom:12px">Synaptic Plasticity</div>
+        <div class="divider" style="margin:0 auto 16px"></div>
+        <h2>From <span class="clay italic">Random</span> to <span class="clay italic">Learned</span></h2>
+      </div>
+      <div class="synapse-row">
+        <!-- Untrained -->
+        <div class="synapse-col">
+          <div class="synapse-label">Random Synapses</div>
+          <svg width="220" height="190" viewBox="0 0 220 190" fill="none">
+            <circle cx="30" cy="30" r="6" fill="rgba(18,18,18,0.05)" stroke="rgba(18,18,18,0.2)" stroke-width="0.5"/>
+            <circle cx="25" cy="75" r="6" fill="rgba(18,18,18,0.05)" stroke="rgba(18,18,18,0.2)" stroke-width="0.5"/>
+            <circle cx="35" cy="120" r="6" fill="rgba(18,18,18,0.05)" stroke="rgba(18,18,18,0.2)" stroke-width="0.5"/>
+            <circle cx="20" cy="160" r="6" fill="rgba(18,18,18,0.05)" stroke="rgba(18,18,18,0.2)" stroke-width="0.5"/>
+            <line x1="36" y1="30" x2="95" y2="50" stroke="#121212" stroke-width="2.2" opacity="0.12"/><line x1="36" y1="30" x2="95" y2="95" stroke="#121212" stroke-width="0.4" opacity="0.18"/><line x1="36" y1="30" x2="95" y2="140" stroke="#121212" stroke-width="1.6" opacity="0.08"/>
+            <line x1="31" y1="75" x2="95" y2="50" stroke="#121212" stroke-width="0.6" opacity="0.2"/><line x1="31" y1="75" x2="95" y2="95" stroke="#121212" stroke-width="2.4" opacity="0.06"/><line x1="31" y1="75" x2="95" y2="140" stroke="#121212" stroke-width="1.1" opacity="0.15"/>
+            <line x1="41" y1="120" x2="95" y2="50" stroke="#121212" stroke-width="1.8" opacity="0.1"/><line x1="41" y1="120" x2="95" y2="95" stroke="#121212" stroke-width="0.5" opacity="0.17"/><line x1="41" y1="120" x2="95" y2="140" stroke="#121212" stroke-width="2.0" opacity="0.07"/>
+            <line x1="26" y1="160" x2="95" y2="50" stroke="#121212" stroke-width="0.3" opacity="0.14"/><line x1="26" y1="160" x2="95" y2="95" stroke="#121212" stroke-width="1.4" opacity="0.11"/><line x1="26" y1="160" x2="95" y2="140" stroke="#121212" stroke-width="0.8" opacity="0.19"/>
+            <ellipse cx="95" cy="50" rx="11" ry="13" fill="rgba(18,18,18,0.03)" stroke="rgba(18,18,18,0.15)" stroke-width="0.5"/>
+            <ellipse cx="95" cy="95" rx="11" ry="13" fill="rgba(18,18,18,0.03)" stroke="rgba(18,18,18,0.15)" stroke-width="0.5"/>
+            <ellipse cx="95" cy="140" rx="11" ry="13" fill="rgba(18,18,18,0.03)" stroke="rgba(18,18,18,0.15)" stroke-width="0.5"/>
+            <line x1="106" y1="50" x2="175" y2="72" stroke="#121212" stroke-width="1.5" opacity="0.1"/><line x1="106" y1="50" x2="175" y2="118" stroke="#121212" stroke-width="0.7" opacity="0.14"/>
+            <line x1="106" y1="95" x2="175" y2="72" stroke="#121212" stroke-width="0.9" opacity="0.16"/><line x1="106" y1="95" x2="175" y2="118" stroke="#121212" stroke-width="2.1" opacity="0.08"/>
+            <line x1="106" y1="140" x2="175" y2="72" stroke="#121212" stroke-width="1.3" opacity="0.12"/><line x1="106" y1="140" x2="175" y2="118" stroke="#121212" stroke-width="0.4" opacity="0.18"/>
+            <ellipse cx="175" cy="72" rx="11" ry="13" fill="rgba(18,18,18,0.03)" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/>
+            <ellipse cx="175" cy="118" rx="11" ry="13" fill="rgba(18,18,18,0.03)" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/>
+            <text x="175" y="77" font-family="Fraunces,serif" font-size="11" fill="rgba(18,18,18,0.25)" text-anchor="middle">?</text>
+            <text x="175" y="123" font-family="Fraunces,serif" font-size="11" fill="rgba(18,18,18,0.25)" text-anchor="middle">?</text>
+            <text x="110" y="178" font-family="Inter,sans-serif" font-size="10" fill="var(--color-muted)" text-anchor="middle" font-style="italic">No LTP yet</text>
+          </svg>
+        </div>
+        <div class="synapse-arrow">
+          <span style="font-size:7px;letter-spacing:0.14em;text-transform:uppercase">Data +</span>
+          <span style="font-size:22px">&rarr;</span>
+          <span style="font-size:7px;letter-spacing:0.14em;text-transform:uppercase">Context</span>
+        </div>
+        <!-- Trained -->
+        <div class="synapse-col">
+          <div class="synapse-label trained">Potentiated Synapses</div>
+          <svg width="220" height="190" viewBox="0 0 220 190" fill="none">
+            <circle cx="30" cy="30" r="6" fill="rgba(176,141,120,0.1)" stroke="rgba(176,141,120,0.4)" stroke-width="0.5"/>
+            <circle cx="25" cy="75" r="6" fill="rgba(176,141,120,0.15)" stroke="rgba(176,141,120,0.5)" stroke-width="0.5"/>
+            <circle cx="35" cy="120" r="6" fill="rgba(176,141,120,0.1)" stroke="rgba(176,141,120,0.4)" stroke-width="0.5"/>
+            <circle cx="20" cy="160" r="6" fill="rgba(176,141,120,0.08)" stroke="rgba(176,141,120,0.3)" stroke-width="0.5"/>
+            <!-- Pruned -->
+            <line x1="36" y1="30" x2="95" y2="95" stroke="#121212" stroke-width="0.3" opacity="0.03"/><line x1="31" y1="75" x2="95" y2="50" stroke="#121212" stroke-width="0.3" opacity="0.03"/><line x1="31" y1="75" x2="95" y2="140" stroke="#121212" stroke-width="0.3" opacity="0.03"/><line x1="41" y1="120" x2="95" y2="50" stroke="#121212" stroke-width="0.3" opacity="0.03"/><line x1="26" y1="160" x2="95" y2="50" stroke="#121212" stroke-width="0.3" opacity="0.03"/><line x1="26" y1="160" x2="95" y2="95" stroke="#121212" stroke-width="0.3" opacity="0.03"/>
+            <!-- Strong -->
+            <line x1="36" y1="30" x2="95" y2="50" stroke="#B08D78" stroke-width="2.2" opacity="0.5"/><line x1="36" y1="30" x2="95" y2="140" stroke="#B08D78" stroke-width="1.2" opacity="0.25"/>
+            <line x1="31" y1="75" x2="95" y2="95" stroke="#B08D78" stroke-width="2.5" opacity="0.55"/>
+            <line x1="41" y1="120" x2="95" y2="95" stroke="#B08D78" stroke-width="1.4" opacity="0.35"/><line x1="41" y1="120" x2="95" y2="140" stroke="#B08D78" stroke-width="2.0" opacity="0.45"/>
+            <line x1="26" y1="160" x2="95" y2="140" stroke="#B08D78" stroke-width="1.8" opacity="0.4"/>
+            <ellipse cx="95" cy="50" rx="11" ry="13" fill="rgba(176,141,120,0.08)" stroke="rgba(176,141,120,0.35)" stroke-width="0.5"/>
+            <ellipse cx="95" cy="95" rx="11" ry="13" fill="rgba(176,141,120,0.15)" stroke="rgba(176,141,120,0.5)" stroke-width="0.8"/>
+            <ellipse cx="95" cy="140" rx="11" ry="13" fill="rgba(176,141,120,0.12)" stroke="rgba(176,141,120,0.4)" stroke-width="0.5"/>
+            <line x1="106" y1="50" x2="175" y2="72" stroke="#B08D78" stroke-width="2.0" opacity="0.5"/><line x1="106" y1="95" x2="175" y2="72" stroke="#B08D78" stroke-width="2.5" opacity="0.6"/>
+            <line x1="106" y1="140" x2="175" y2="118" stroke="#B08D78" stroke-width="1.5" opacity="0.35"/><line x1="106" y1="140" x2="175" y2="72" stroke="#B08D78" stroke-width="0.8" opacity="0.2"/>
+            <line x1="106" y1="50" x2="175" y2="118" stroke="#121212" stroke-width="0.3" opacity="0.03"/><line x1="106" y1="95" x2="175" y2="118" stroke="#121212" stroke-width="0.3" opacity="0.03"/>
+            <ellipse cx="175" cy="72" rx="11" ry="13" fill="rgba(176,141,120,0.2)" stroke="#B08D78" stroke-width="1"/>
+            <ellipse cx="175" cy="118" rx="11" ry="13" fill="rgba(176,141,120,0.04)" stroke="rgba(176,141,120,0.15)" stroke-width="0.5"/>
+            <text x="175" y="77" font-family="Fraunces,serif" font-size="11" fill="#B08D78" text-anchor="middle" font-weight="600">3</text>
+            <text x="175" y="123" font-family="Fraunces,serif" font-size="11" fill="rgba(18,18,18,0.15)" text-anchor="middle">5</text>
+            <text x="110" y="178" font-family="Inter,sans-serif" font-size="10" fill="var(--color-clay)" text-anchor="middle" font-style="italic">Long-term potentiation</text>
+          </svg>
+        </div>
+      </div>
+      <p class="synapse-caption">Just as repeated stimulation strengthens synaptic connections through LTP, AI weights are adjusted through backpropagation. Context is the stimulus that determines which pathways fire &mdash; and which get pruned.</p>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
+<!-- ===== SLIDE 6: Principles ===== -->
+<div class="slide" id="slide-6">
+  <div class="slide-header"><span class="mono-label">The Principles</span><span class="slide-number">06 / 06</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div class="principles-layout">
+      <div class="mono-sm">Vibe Coding Principles</div>
+      <div class="divider" style="margin:0 auto"></div>
+      <div class="principles-grid">
+        <div class="principle-card"><div class="pnum">1</div><h4>Be as specific as possible</h4><p>The more precise your instructions, the narrower the output space. Vague prompts produce vague results.</p></div>
+        <div class="principle-card"><div class="pnum">2</div><h4>Understand your problem better than AI</h4><p>You don't need to write code. But you must know what you're building and why. Be the architect &mdash; AI handles implementation.</p></div>
+        <div class="principle-card"><div class="pnum">3</div><h4>Iterate, iterate, iterate</h4><p>Building with AI is not one-shot. Prompt, review, refine, correct, repeat. You are the loss function.</p></div>
+        <div class="principle-card"><div class="pnum">4</div><h4>Context is everything</h4><p>Give AI the right context &mdash; not all of it. Too little and it guesses blindly. Too much and the signal gets lost in noise.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
+<!-- Nav -->
+<div class="nav-dots">
+  <div class="nav-dot active" onclick="goToSlide(0)"></div>
+  <div class="nav-dot" onclick="goToSlide(1)"></div>
+  <div class="nav-dot" onclick="goToSlide(2)"></div>
+  <div class="nav-dot" onclick="goToSlide(3)"></div>
+  <div class="nav-dot" onclick="goToSlide(4)"></div>
+  <div class="nav-dot" onclick="goToSlide(5)"></div>
+  <div class="nav-dot" onclick="goToSlide(6)"></div>
+</div>
+<div class="nav-hint">&larr; &rarr; to navigate</div>
+
+<script>
+let cur = 0, sub = 0;
+const TOTAL = 7;
+// Slide 1: 1 sub-step (NL insert), Slide 3: 5 sub-steps (NN backprop)
+const SUB = {0:0, 1:1, 2:0, 3:5, 4:0, 5:0, 6:0};
+let timers = [];
+let nlShown = false;
+
+function clr() { timers.forEach(clearTimeout); timers = []; }
+
+function goToSlide(i) {
+  if (i < 0 || i >= TOTAL || i === cur) return;
+  clr();
+  const c = document.getElementById(`slide-${cur}`);
+  const n = document.getElementById(`slide-${i}`);
+  c.classList.remove('active'); c.classList.add('exit');
+  setTimeout(() => { c.classList.remove('exit'); n.classList.add('active'); }, 300);
+  cur = i; sub = 0;
+  if (i === 3) initNN();
+  // Keep NL visible if already shown
+  if (i === 1 && nlShown) setTimeout(() => {
+    document.getElementById('layer-nl').classList.add('visible');
+    document.getElementById('app-num').textContent = '06';
+  }, 350);
+  document.querySelectorAll('.nav-dot').forEach((d, j) => d.classList.toggle('active', j === i));
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') {
+    e.preventDefault();
+    if (sub < SUB[cur]) { sub++; doSub(); } else goToSlide(cur + 1);
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    if (sub > 0 && cur === 3) { initNN(); sub = 0; }
+    else goToSlide(cur - 1);
+  }
+});
+
+function doSub() {
+  if (cur === 1) revealNL();
+  if (cur === 3) nnStep(sub);
+}
+
+// ===== NL Insert =====
+function revealNL() {
+  document.getElementById('layer-nl').classList.add('visible');
+  document.getElementById('app-num').textContent = '06';
+  nlShown = true;
+}
+
+// ===== NN Animation =====
+function setActive(n) { for (let i=1;i<=5;i++) document.getElementById(`nn-step-${i}`).classList.toggle('step-active', i===n); }
+function op(id, v, ms) { const e=document.getElementById(id); if(e){e.style.transition=`opacity ${ms}ms ease`; e.setAttribute('opacity',v);} }
+function sweep(id, o, d, c) {
+  const t=setTimeout(()=>{const g=document.getElementById(id);g.style.transition='opacity 400ms ease';g.setAttribute('opacity',o);if(c)g.querySelectorAll('line').forEach(l=>l.setAttribute('stroke',c));},d);
+  timers.push(t);
+}
+function lightH(gid, d) {
+  const t=setTimeout(()=>{document.querySelectorAll(`#${gid} .nn-hn`).forEach((n,i)=>{const t2=setTimeout(()=>{n.setAttribute('fill','rgba(176,141,120,0.1)');n.setAttribute('stroke','rgba(176,141,120,0.4)');},i*50);timers.push(t2);});},d);
+  timers.push(t);
+}
+
+function initNN() {
+  clr(); setActive(1);
+  document.getElementById('nn-hint').style.opacity='0.6';
+  document.querySelectorAll('#input-nodes .nn-in').forEach(n=>{n.setAttribute('fill','none');n.setAttribute('stroke','rgba(18,18,18,0.12)');});
+  document.querySelectorAll('#input-nodes .nn-it').forEach(t=>t.setAttribute('fill','rgba(18,18,18,0.3)'));
+  ['hidden1-nodes','hidden2-nodes'].forEach(g=>document.querySelectorAll(`#${g} .nn-hn`).forEach(n=>{n.setAttribute('fill','none');n.setAttribute('stroke','rgba(18,18,18,0.12)');}));
+  document.getElementById('conn-ih1').setAttribute('opacity','0.06');
+  document.getElementById('conn-ih1').querySelectorAll('line').forEach(l=>l.setAttribute('stroke','#121212'));
+  document.getElementById('conn-h1h2').setAttribute('opacity','0.04');
+  document.getElementById('conn-h2o').setAttribute('opacity','0.04');
+  ['conn-h1h2','conn-h2o'].forEach(id=>document.getElementById(id).querySelectorAll('line').forEach(l=>l.setAttribute('stroke','#B08D78')));
+  ['output-wrong','output-correct','nn-loss','nn-bp-label','nn-ok-label','conn-trained'].forEach(id=>document.getElementById(id).setAttribute('opacity','0'));
+}
+
+function nnStep(s) {
+  clr();
+  if (s===1) {
+    setActive(1); document.getElementById('nn-hint').style.opacity='0';
+    const ns=document.querySelectorAll('#input-nodes .nn-in');
+    const ts=document.querySelectorAll('#input-nodes .nn-it');
+    ns.forEach((n,i)=>{const t=setTimeout(()=>{n.setAttribute('fill','rgba(176,141,120,0.12)');n.setAttribute('stroke','rgba(176,141,120,0.5)');if(ts[i])ts[i].setAttribute('fill','#121212');},i*80);timers.push(t);});
+  }
+  if (s===2) {
+    setActive(2);
+    sweep('conn-ih1','0.15',0); lightH('hidden1-nodes',300);
+    sweep('conn-h1h2','0.12',500); lightH('hidden2-nodes',800);
+    sweep('conn-h2o','0.12',1000);
+    const t=setTimeout(()=>op('output-wrong','1',400),1300); timers.push(t);
+  }
+  if (s===3) { setActive(3); op('nn-loss','1',400); }
+  if (s===4) {
+    setActive(4); op('nn-loss','0',300); op('nn-bp-label','1',400);
+    sweep('conn-h2o','0.2',200,'#D97755'); sweep('conn-h1h2','0.2',600,'#D97755'); sweep('conn-ih1','0.2',1000,'#D97755');
+    const t=setTimeout(()=>{
+      ['conn-h2o','conn-h1h2','conn-ih1'].forEach(id=>{const g=document.getElementById(id);g.setAttribute('opacity','0.1');g.querySelectorAll('line').forEach(l=>l.setAttribute('stroke','#B08D78'));});
+      const h1=document.querySelectorAll('#hidden1-nodes .nn-hn');
+      h1[2].setAttribute('fill','rgba(176,141,120,0.2)');h1[2].setAttribute('stroke','rgba(176,141,120,0.6)');
+      h1[3].setAttribute('fill','rgba(176,141,120,0.15)');h1[3].setAttribute('stroke','rgba(176,141,120,0.5)');
+      const h2=document.querySelectorAll('#hidden2-nodes .nn-hn');
+      h2[1].setAttribute('fill','rgba(176,141,120,0.2)');h2[1].setAttribute('stroke','rgba(176,141,120,0.6)');
+      h2[2].setAttribute('fill','rgba(176,141,120,0.15)');h2[2].setAttribute('stroke','rgba(176,141,120,0.5)');
+    },1600); timers.push(t);
+  }
+  if (s===5) {
+    setActive(5); op('nn-bp-label','0',200); op('output-wrong','0',300);
+    const t=setTimeout(()=>{op('conn-trained','0.6',500);op('output-correct','1',500);op('nn-ok-label','1',500);},400);timers.push(t);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Coding 1.1 — Workshop Transcript</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-paper: #F8F7F4;
+      --color-ink: #121212;
+      --color-clay: #B08D78;
+      --color-bg: #e0ddd8;
+      --color-border: rgba(18, 18, 18, 0.08);
+      --color-muted: rgba(18, 18, 18, 0.55);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--color-bg);
+      color: var(--color-ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--color-paper);
+      padding: 60px 56px;
+      border: 1px solid var(--color-border);
+      position: relative;
+    }
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 16px; left: 16px;
+      width: 16px; height: 16px;
+      border-top: 1px solid var(--color-clay);
+      border-left: 1px solid var(--color-clay);
+    }
+    .container::after {
+      content: '';
+      position: absolute;
+      bottom: 16px; right: 16px;
+      width: 16px; height: 16px;
+      border-bottom: 1px solid var(--color-clay);
+      border-right: 1px solid var(--color-clay);
+    }
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+      font-size: 42px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 48px;
+      margin-bottom: 6px;
+    }
+    h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      margin-top: 32px;
+      margin-bottom: 4px;
+    }
+    .mono-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--color-muted);
+    }
+    .clay { color: var(--color-clay); }
+    .italic { font-style: italic; }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-clay), transparent);
+      width: 64px;
+      margin: 16px 0;
+    }
+    .section-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 40px 0;
+    }
+    p { margin-bottom: 14px; }
+    strong { font-weight: 600; }
+    em { font-style: italic; color: var(--color-clay); }
+    .stage-direction {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-clay);
+      margin: 24px 0 12px;
+      padding: 8px 12px;
+      border-left: 2px solid var(--color-clay);
+      background: rgba(176, 141, 120, 0.06);
+    }
+    .principle-box {
+      background: var(--color-ink);
+      color: var(--color-paper);
+      padding: 20px 24px;
+      margin: 16px 0;
+    }
+    .principle-box strong {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: 17px;
+    }
+    .principle-box p {
+      color: rgba(248, 247, 244, 0.65);
+      font-size: 14px;
+      margin-bottom: 0;
+      margin-top: 6px;
+    }
+    .principle-num {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--color-clay);
+      font-style: italic;
+      margin-right: 12px;
+      float: left;
+      line-height: 1;
+    }
+    ul, ol { margin: 12px 0 14px 24px; }
+    li { margin-bottom: 6px; }
+    .time-note {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--color-muted);
+      letter-spacing: 0.12em;
+    }
+    @media print {
+      body { padding: 0; background: white; }
+      .container { border: none; padding: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <span class="mono-label">Scott's Scholar Supper Series</span>
+    <div class="divider"></div>
+    <h1>Vibe Coding <span class="clay italic">1.1</span></h1>
+    <p class="mono-label" style="margin-bottom: 0;">Workshop Transcript &amp; Presenter Guide</p>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== -->
+    <!-- SLIDE 1               -->
+    <!-- ===================== -->
+
+    <h2>Slide 1: "It's Never Been Easier to Build"</h2>
+    <div class="stage-direction">Opening — 2-3 minutes</div>
+
+    <p>Welcome everyone to the first session of our vibe coding series. Tonight I want to start with a simple truth: <strong>it has never been easier to build.</strong></p>
+
+    <p>For the past 20 to 30 years, everything you've ever used on a computer — every app, every website, every tool — has been built on top of a stack of abstraction layers:</p>
+
+    <ul>
+      <li>At the very bottom, you have <strong>hardware</strong> — the physical chips, circuits, transistors.</li>
+      <li>On top of that sits <strong>machine code</strong> — raw instructions the hardware understands, written in ones and zeros.</li>
+      <li>Above that, an <strong>operating system</strong> orchestrates everything — Windows, macOS, Linux.</li>
+      <li>The operating system exposes <strong>programming languages</strong> — Python, JavaScript, C++ — that let humans write instructions in something closer to English.</li>
+      <li>And finally, those programming languages are what produce the <strong>applications</strong> we all use every day.</li>
+    </ul>
+
+    <p>Here's the thing: if you wanted to build an application before, you had to deeply understand programming languages. Not just a surface-level overview — you needed to know the syntax, the tooling, the frameworks, how to debug, how to deploy. Often you needed to know multiple languages. This barrier was so high that an entire job market was created around it. "Software engineer" became one of the most in-demand and well-compensated roles in the world, precisely because so few people could do it.</p>
+
+    <p><strong>AI has completely abstracted this away.</strong></p>
+
+    <p>Now there's a new layer on top: <strong>natural language.</strong> You can describe what you want in plain English, and AI coding agents will write the code for you. The barrier between having an idea and building that idea has never been lower. That's what this workshop series is about — learning how to build effectively using this new paradigm.</p>
+
+    <p>But before we jump into building, we need to understand what AI actually is. Because how you think about AI fundamentally changes how well you can work with it.</p>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== -->
+    <!-- SLIDE 2               -->
+    <!-- ===================== -->
+
+    <h2>Slide 2: Neural Networks — What Is AI, Really?</h2>
+    <div class="stage-direction">Core Explanation — 5-7 minutes</div>
+
+    <p>So what is AI? How does it actually work? And why does understanding this make you a better builder?</p>
+
+    <p>At the foundation of all modern AI is something called a <strong>neural network.</strong> The name is no accident — it's inspired by how your brain works. And I want to use that analogy to make this click.</p>
+
+    <h3>The Baby Analogy</h3>
+
+    <p>Think about a baby learning to recognize numbers for the first time. When a baby is born, their neurons are essentially a blank canvas. The connections between neurons — the patterns that fire — are completely random. This is why babies do bizarre, unpredictable things. Their brain hasn't learned any patterns yet.</p>
+
+    <p>Now, what do parents do? They constantly teach. They hold up flashcards: "This is the number one. This is the number two." They point at things. The baby is also absorbing visual data, auditory data, sensory data — a constant flood of information pouring in. Over time, through sheer repetition and correction, the baby's neurons start forming reliable patterns. Certain neural pathways strengthen. The baby starts to <em>know</em> that when they see a particular shape, that's a "3."</p>
+
+    <h3>How Computers Learn the Same Way</h3>
+
+    <p>Here's the problem for computers: a computer is just electricity and switches. Ones and zeros. How do you get something that primitive to recognize a handwritten number?</p>
+
+    <p>The answer: you do exactly what parents do with babies.</p>
+
+    <p>The very first breakthrough application of neural networks was literally this — teaching a computer to recognize handwritten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.</p>
+
+    <p>Here's how it works, step by step:</p>
+
+    <ol>
+      <li><strong>You start with random connections.</strong> Just like a newborn's brain, when you create a neural network, all the "weights" — the strength of connections between artificial neurons — are completely random. The network knows nothing.</li>
+      <li><strong>You feed it data.</strong> You show it thousands of images of handwritten numbers. Each image is just a grid of pixels — dark pixels where ink is, light pixels where it isn't. These pixel values are the input.</li>
+      <li><strong>It makes a guess.</strong> The data flows through layers of artificial neurons, each applying their random weights, and an answer comes out the other end. At first, this answer is nonsense — just like a baby randomly pointing at a card.</li>
+      <li><strong>You tell it the right answer.</strong> You compare the network's guess to the truth. It guessed "7" but the answer was "3." You calculate exactly how wrong it was — this is called the <strong>loss function.</strong> It's a mathematical measure of error.</li>
+      <li><strong>You adjust the connections.</strong> Here's the key step. That error signal flows backward through the network, and every single weight gets nudged slightly — "you should have fired a little more here, a little less there" — so that next time it sees a similar "3," it's slightly more likely to get it right. This is called <strong>backpropagation.</strong></li>
+      <li><strong>You repeat this thousands of times.</strong> Each time, the weights get a little better. Patterns emerge. The network learns that certain pixel arrangements correspond to certain numbers. It's not memorizing — it's generalizing. It can recognize a "3" it's never seen before, written in someone's messy handwriting.</li>
+    </ol>
+
+    <h3>The Key Insight</h3>
+
+    <p>That's all a neural network is. It's a web of simple mathematical functions, connected by weights that get adjusted through repetition until the outputs match reality. There's no understanding. There's no consciousness. There's no reasoning in the way you and I reason.</p>
+
+    <p><strong>It is glorified statistics.</strong></p>
+
+    <p>The network is finding statistical patterns in data — nothing more, nothing less. When you scale this up massively — billions of parameters, trained on the entire internet's worth of text — you get something like Claude or ChatGPT. It feels human. It writes eloquently. It can code. But underneath, it's the same fundamental process: pattern matching through weighted connections, refined by feedback.</p>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== -->
+    <!-- SLIDE 3               -->
+    <!-- ===================== -->
+
+    <h2>Slide 3: Why Does This Matter?</h2>
+    <div class="stage-direction">The Mindset Shift — 3-4 minutes</div>
+
+    <p>So why am I telling you all this? Why does it matter that AI is glorified statistics?</p>
+
+    <p>Because <strong>AI is not human.</strong></p>
+
+    <p>When you sit down with a coding agent and start building, it's tempting to treat it like a colleague — someone who understands your intent, grasps the bigger picture, and can fill in the gaps. But it's not doing any of that. It's predicting the most statistically likely next token based on patterns it learned during training.</p>
+
+    <p>This insight completely changes your relationship with these tools. It means:</p>
+
+    <ul>
+      <li>It will confidently give you wrong answers — because statistically, confidence patterns are common in its training data.</li>
+      <li>It will lose context — because it doesn't actually hold a mental model of your project.</li>
+      <li>It will make things up — because generating plausible-sounding text is literally what it's optimized to do.</li>
+    </ul>
+
+    <p>Understanding this is what separates people who use AI effectively from people who get frustrated and give up. The people who build amazing things with AI aren't treating it like a magic oracle. They're treating it like what it is: a powerful statistical tool that needs to be directed properly.</p>
+
+    <h3>The Curse of Vibe Coding</h3>
+
+    <p>Here's the trap: "vibe coding" has become this popular term where people just throw prompts at an AI and hope for the best. When it works, it feels magical. But when it doesn't — and it will fail — you're stuck. You don't know what went wrong. You don't know how to fix it. You just keep throwing more prompts at it, and the codebase becomes an incomprehensible mess. I call this <strong>the curse of vibe coding.</strong></p>
+
+    <p>The goal of this workshop series is to make sure you don't fall into that trap.</p>
+
+    <h3>Four Principles for Building with AI</h3>
+
+    <p>These are the four lessons I want you to take away from tonight:</p>
+
+    <div class="principle-box">
+      <span class="principle-num">1</span>
+      <strong>Be as specific as possible.</strong>
+      <p>AI is a statistical engine. The more precise and detailed your instructions, the narrower the space of possible outputs, and the more likely you get what you actually want. Vague prompts produce vague results. Specific prompts produce specific results.</p>
+    </div>
+
+    <div class="principle-box">
+      <span class="principle-num">2</span>
+      <strong>You must understand your problem better than AI does.</strong>
+      <p>You don't need to know how to write code. But you absolutely need to understand <em style="color: var(--color-clay);">what</em> you're building and <em style="color: var(--color-clay);">why.</em> You need to be able to break your problem down into clear pieces. AI can handle the implementation, but you have to be the architect. You have to own the vision.</p>
+    </div>
+
+    <div class="principle-box">
+      <span class="principle-num">3</span>
+      <strong>Iterate, iterate, iterate.</strong>
+      <p>Building with AI is not a one-shot process. You prompt, you review, you refine, you correct, you prompt again. The best results come from tight feedback loops — just like how a neural network learns through repeated cycles of prediction and correction. You are the loss function. Your feedback is what makes the output better.</p>
+    </div>
+
+    <div class="principle-box">
+      <span class="principle-num">4</span>
+      <strong>Context is everything.</strong>
+      <p>Think back to the baby analogy: a baby doesn't learn what the number "3" is from a single flashcard. It learns from many examples — different handwriting, different sizes, different contexts. The richness of the data is what makes the learning work. AI is the same way. When you're prompting a coding agent, the more relevant context you provide — what the project does, what you've already built, what conventions you're following, what the end user expects — the more the AI can narrow its statistical predictions toward what you actually need. Without context, it's guessing from the entire universe of possibilities. With context, you're handing it a flashcard and saying "this is what we're working with."</p>
+      <p>But here's the flip side — and this is critical: you can also <em style="color: var(--color-clay);">overload</em> it with context. Think about the baby again. If you're trying to teach a baby what the number "3" looks like, and at the same time you're playing music, flashing colors, showing them letters, and talking about animals — the baby can't focus. There's too much noise. The signal gets lost. AI works the same way. If you dump your entire codebase, every requirement, every tangential idea into one prompt, the AI doesn't know what to prioritize. It starts giving you muddled, unfocused outputs. The key is giving it the <em style="color: var(--color-clay);">right</em> context — not all the context. Be deliberate about what you include. Give it what it needs to do the specific task at hand, and leave out what's irrelevant. Quality of context over quantity of context.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <h3>Closing</h3>
+    <div class="stage-direction">1 minute</div>
+
+    <p>In our next sessions, we're going to put these principles into practice. We'll open up a coding agent, start building something real, and you'll see firsthand how being specific, understanding your problem, iterating aggressively, and providing rich context leads to genuinely impressive results.</p>
+
+    <p>For now — remember: it's never been easier to build. But building well still requires intention. That's what we're here to learn.</p>
+
+    <div class="divider" style="margin-top: 32px;"></div>
+    <p class="time-note">Total estimated time: 14-17 minutes</p>
+
+  </div>
+</body>
+</html>
