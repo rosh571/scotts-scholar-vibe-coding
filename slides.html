@@ -135,6 +135,11 @@
     .terminal-list .tl-desc { font-family: var(--font-sans); font-size: 14px; line-height: 1.5; color: rgba(248,247,244,0.6); }
     .claude-tagline { font-family: var(--font-serif); font-style: italic; color: var(--color-clay); font-size: 16px; font-weight: 300; }
 
+    /* Pixel grid */
+    .px { display:flex; align-items:center; justify-content:center; border:1px solid var(--color-border); position:relative; transition: box-shadow 0.4s ease, border-color 0.4s ease; }
+    .px-val { font-family:var(--font-mono); font-size:8px; opacity:0.5; }
+    .px.highlight { border-color: var(--color-clay); box-shadow: inset 0 0 0 2px rgba(176,141,120,0.4); }
+
     /* Nav */
     .nav-dots { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 50; }
     .nav-dot { width: 8px; height: 8px; border: 1px solid var(--color-ink); background: transparent; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
@@ -345,112 +350,121 @@
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
 </div>
 
-<!-- ===== SLIDE 4: Artificial Neural Network + Backprop ===== -->
+<!-- ===== SLIDE 4: Training a Neural Network (Pixel Grid) ===== -->
 <div class="slide" id="slide-4">
   <div class="slide-header"><span class="mono-label">The Artificial Version</span><span class="slide-number">04 / 09</span></div>
   <div class="slide-content">
     <div class="corner-accents"></div>
-    <div class="nn-anim-layout">
-      <div style="text-align:center">
-        <div class="mono-sm" style="margin-bottom:12px">Same principle, in a computer</div>
-        <div class="divider" style="margin:0 auto 16px"></div>
-        <h2>Training a Neural Network</h2>
+    <div class="grid-2col" style="gap:48px;align-items:start;max-width:1050px">
+      <!-- LEFT: Pixel grid input -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="mono-sm">The input &mdash; pixels</div>
+        <div class="divider"></div>
+        <p style="font-size:13px;color:var(--color-muted);line-height:1.5">Goal: teach a computer to recognize a handwritten <strong style="color:var(--color-ink)">3</strong>. The input is grayscale pixel values.</p>
+        <!-- Main pixel grid -->
+        <div id="pixel-grid" style="display:grid;grid-template-columns:repeat(5,42px);grid-template-rows:repeat(7,42px);gap:2px;justify-content:center;transition:opacity 0.5s ease">
+          <!-- Row 1: .###. -->
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
+          <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
+          <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <!-- Row 2: ...#. -->
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
+          <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <!-- Row 3: .##. -->
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.2" style="background:rgba(18,18,18,0.13)"><span class="px-val">0.2</span></div>
+          <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
+          <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <!-- Row 4: ...#. -->
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <!-- Row 5: ...#. -->
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
+          <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <!-- Row 6: .#.#. -->
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.6" style="background:rgba(18,18,18,0.45)"><span class="px-val" style="color:#F8F7F4">0.6</span></div>
+          <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
+          <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <!-- Row 7: .###. -->
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+          <div class="px" data-v="0.7" style="background:rgba(18,18,18,0.55)"><span class="px-val" style="color:#F8F7F4">0.7</span></div>
+          <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
+          <div class="px" data-v="0.7" style="background:rgba(18,18,18,0.55)"><span class="px-val" style="color:#F8F7F4">0.7</span></div>
+          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+        </div>
+        <div class="mono-sm" style="text-align:center;font-size:8px;opacity:0.5">5 &times; 7 PIXEL GRID &mdash; GRAYSCALE VALUES 0.0 (WHITE) TO 1.0 (BLACK)</div>
+        <!-- Small example 3s -->
+        <div style="display:flex;gap:16px;justify-content:center;align-items:center;margin-top:4px">
+          <div class="mono-sm" style="font-size:8px">Other 3s:</div>
+          <svg width="35" height="49" viewBox="0 0 5 7"><rect x="1" y="0" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="2" y="0" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="3" y="0" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="3" y="1" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="2" y="2" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="3" y="2" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="3" y="3" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="4" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="1" y="5" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="3" y="5" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="1" y="6" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="2" y="6" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="6" width="1" height="1" fill="rgba(18,18,18,0.5)"/></svg>
+          <svg width="35" height="49" viewBox="0 0 5 7"><rect x="0" y="0" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="1" y="0" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="2" y="0" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="0" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="3" y="1" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="2" y="1" width="1" height="1" fill="rgba(18,18,18,0.3)"/><rect x="1" y="2" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="2" y="2" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="3" y="3" width="1" height="1" fill="rgba(18,18,18,0.85)"/><rect x="3" y="4" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="2" y="4" width="1" height="1" fill="rgba(18,18,18,0.3)"/><rect x="0" y="5" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="3" y="5" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="1" y="6" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="2" y="6" width="1" height="1" fill="rgba(18,18,18,0.85)"/><rect x="3" y="6" width="1" height="1" fill="rgba(18,18,18,0.4)"/></svg>
+          <svg width="35" height="49" viewBox="0 0 5 7"><rect x="1" y="0" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="2" y="0" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="0" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="4" y="1" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="3" y="1" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="2" y="2" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="3" y="2" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="4" y="3" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="3" width="1" height="1" fill="rgba(18,18,18,0.3)"/><rect x="4" y="4" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="3" y="5" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="4" y="5" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="1" y="6" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="2" y="6" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="6" width="1" height="1" fill="rgba(18,18,18,0.7)"/></svg>
+        </div>
       </div>
 
-      <svg id="nn-svg" viewBox="0 0 600 280" fill="none" style="width:100%;max-width:600px">
-        <!-- Connections: input->hidden1 -->
-        <g id="conn-ih1" opacity="0.06">
-          <line x1="75" y1="40" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="40" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
-          <line x1="75" y1="80" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="80" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
-          <line x1="75" y1="120" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="120" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
-          <line x1="75" y1="160" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="160" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
-          <line x1="75" y1="200" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="200" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
-          <line x1="75" y1="240" x2="200" y2="40" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="80" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="120" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="160" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="200" stroke="#121212" stroke-width="0.5"/><line x1="75" y1="240" x2="200" y2="240" stroke="#121212" stroke-width="0.5"/>
-        </g>
-        <!-- hidden1->hidden2 -->
-        <g id="conn-h1h2" opacity="0.04">
-          <line x1="220" y1="40" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="40" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="40" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="40" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
-          <line x1="220" y1="80" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="80" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="80" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="80" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
-          <line x1="220" y1="120" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="120" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="120" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="120" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
-          <line x1="220" y1="160" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="160" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="160" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="160" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
-          <line x1="220" y1="200" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="200" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="200" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="200" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
-          <line x1="220" y1="240" x2="340" y2="60" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="240" x2="340" y2="110" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="240" x2="340" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="220" y1="240" x2="340" y2="210" stroke="#B08D78" stroke-width="0.5"/>
-        </g>
-        <!-- hidden2->output -->
-        <g id="conn-h2o" opacity="0.04">
-          <line x1="360" y1="60" x2="475" y2="40" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="60" x2="475" y2="80" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="60" x2="475" y2="120" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="60" x2="475" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="60" x2="475" y2="200" stroke="#B08D78" stroke-width="0.5"/>
-          <line x1="360" y1="110" x2="475" y2="40" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="110" x2="475" y2="80" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="110" x2="475" y2="120" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="110" x2="475" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="110" x2="475" y2="200" stroke="#B08D78" stroke-width="0.5"/>
-          <line x1="360" y1="160" x2="475" y2="40" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="160" x2="475" y2="80" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="160" x2="475" y2="120" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="160" x2="475" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="160" x2="475" y2="200" stroke="#B08D78" stroke-width="0.5"/>
-          <line x1="360" y1="210" x2="475" y2="40" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="210" x2="475" y2="80" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="210" x2="475" y2="120" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="210" x2="475" y2="160" stroke="#B08D78" stroke-width="0.5"/><line x1="360" y1="210" x2="475" y2="200" stroke="#B08D78" stroke-width="0.5"/>
-        </g>
-        <g id="conn-trained" opacity="0">
-          <line x1="360" y1="110" x2="475" y2="120" stroke="#B08D78" stroke-width="2.5"/>
-          <line x1="360" y1="160" x2="475" y2="120" stroke="#B08D78" stroke-width="2.5"/>
-          <line x1="220" y1="120" x2="340" y2="110" stroke="#B08D78" stroke-width="2"/>
-          <line x1="220" y1="160" x2="340" y2="160" stroke="#B08D78" stroke-width="2"/>
-        </g>
-        <!-- Input nodes -->
-        <g id="input-nodes">
-          <rect x="30" y="26" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="43" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">0</text>
-          <rect x="30" y="66" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="83" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">1</text>
-          <rect x="30" y="106" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="123" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">2</text>
-          <rect x="30" y="146" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="163" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">3</text>
-          <rect x="30" y="186" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="203" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.3)" text-anchor="middle" class="nn-it">4</text>
-          <rect x="30" y="226" width="34" height="26" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-in"/><text x="47" y="243" font-family="Fraunces,serif" font-size="14" fill="rgba(18,18,18,0.2)" text-anchor="middle" class="nn-it">...</text>
-        </g>
-        <g id="hidden1-nodes">
-          <circle cx="210" cy="40" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-          <circle cx="210" cy="80" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-          <circle cx="210" cy="120" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-          <circle cx="210" cy="160" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-          <circle cx="210" cy="200" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-          <circle cx="210" cy="240" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-        </g>
-        <g id="hidden2-nodes">
-          <circle cx="350" cy="60" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-          <circle cx="350" cy="110" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-          <circle cx="350" cy="160" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-          <circle cx="350" cy="210" r="9" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
-        </g>
-        <!-- Output wrong -->
-        <g id="output-wrong" opacity="0">
-          <rect x="465" y="28" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="43" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.12</text>
-          <rect x="465" y="68" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="83" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.08</text>
-          <rect x="465" y="108" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="123" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.15</text>
-          <rect x="465" y="148" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="163" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.20</text>
-          <rect x="465" y="188" width="55" height="22" fill="var(--color-error)" stroke="var(--color-error)" stroke-width="0.5"/><text x="492" y="203" font-family="JetBrains Mono,monospace" font-size="10" fill="#F8F7F4" text-anchor="middle" font-weight="500">0.45</text>
-          <text x="530" y="203" font-family="Fraunces,serif" font-size="10" fill="var(--color-error)" font-style="italic" font-weight="600">five</text>
-        </g>
-        <!-- Output correct -->
-        <g id="output-correct" opacity="0">
-          <rect x="465" y="28" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="43" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.02</text>
-          <rect x="465" y="68" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="83" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.03</text>
-          <rect x="465" y="108" width="55" height="22" fill="#B08D78" stroke="#B08D78" stroke-width="0.5"/><text x="492" y="123" font-family="JetBrains Mono,monospace" font-size="10" fill="#F8F7F4" text-anchor="middle" font-weight="500">0.91</text>
-          <rect x="465" y="148" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="163" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.01</text>
-          <rect x="465" y="188" width="55" height="22" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5"/><text x="492" y="203" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(18,18,18,0.35)" text-anchor="middle">0.01</text>
-          <text x="530" y="123" font-family="Fraunces,serif" font-size="10" fill="#B08D78" font-style="italic" font-weight="600">three</text>
-        </g>
-        <g id="nn-loss" opacity="0"><rect x="462" y="220" width="78" height="24" fill="none" stroke="var(--color-error)" stroke-width="1" stroke-dasharray="4 2"/><text x="501" y="236" font-family="JetBrains Mono,monospace" font-size="9" fill="var(--color-error)" text-anchor="middle" letter-spacing="1">LOSS: 0.73</text></g>
-        <g id="nn-bp-label" opacity="0"><text x="280" y="270" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" text-anchor="middle" letter-spacing="1.5">BACKPROPAGATION — ADJUSTING WEIGHTS</text></g>
-        <g id="nn-ok-label" opacity="0"><text x="280" y="270" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" text-anchor="middle" letter-spacing="1.5">WEIGHTS UPDATED — CORRECT OUTPUT</text></g>
-        <!-- Layer labels -->
-        <text x="47" y="16" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(18,18,18,0.35)" text-anchor="middle" letter-spacing="1.5">INPUT</text>
-        <text x="280" y="16" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(18,18,18,0.35)" text-anchor="middle" letter-spacing="1.5">HIDDEN LAYERS</text>
-        <text x="492" y="16" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(18,18,18,0.35)" text-anchor="middle" letter-spacing="1.5">OUTPUT</text>
-      </svg>
+      <!-- RIGHT: Training loop -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="mono-sm">The training loop</div>
+        <div class="divider"></div>
+        <h3 style="font-size:24px">Training a Neural Network</h3>
 
-      <div class="nn-bottom-row" id="nn-steps">
-        <div class="nn-step step-active" id="nn-step-1"><div class="nn-step-num">1</div><span class="nn-step-text">Feed data in</span></div>
-        <span class="nn-step-arrow">&rarr;</span>
-        <div class="nn-step" id="nn-step-2"><div class="nn-step-num">2</div><span class="nn-step-text">Random guess</span></div>
-        <span class="nn-step-arrow">&rarr;</span>
-        <div class="nn-step" id="nn-step-3"><div class="nn-step-num">3</div><span class="nn-step-text">Calculate error</span></div>
-        <span class="nn-step-arrow">&rarr;</span>
-        <div class="nn-step" id="nn-step-4"><div class="nn-step-num">4</div><span class="nn-step-text">Adjust weights</span></div>
-        <span class="nn-step-arrow">&rarr;</span>
-        <div class="nn-step" id="nn-step-5"><div class="nn-step-num" style="font-size:14px">&infin;</div><span class="nn-step-text">Repeat</span></div>
+        <!-- Animated area -->
+        <div id="train-area" style="display:flex;flex-direction:column;gap:16px;min-height:280px">
+          <!-- Step indicator -->
+          <div id="train-msg" style="font-size:14px;color:var(--color-muted);line-height:1.55;min-height:60px">
+            We feed the pixel values into the network. Each pixel is a number &mdash; dark pixels are close to 1.0, light pixels close to 0.0.
+          </div>
+
+          <!-- Guess display -->
+          <div style="display:flex;gap:16px;align-items:center">
+            <div style="flex:1">
+              <div class="mono-sm" style="font-size:8px;margin-bottom:6px">Network's Guess</div>
+              <div id="train-guess" style="font-family:var(--font-serif);font-size:56px;font-weight:300;color:rgba(18,18,18,0.15);line-height:1">?</div>
+            </div>
+            <div style="flex:1">
+              <div class="mono-sm" style="font-size:8px;margin-bottom:6px">Truth</div>
+              <div style="font-family:var(--font-serif);font-size:56px;font-weight:300;color:var(--color-clay);line-height:1;font-style:italic">3</div>
+            </div>
+          </div>
+
+          <!-- Loss / feedback area -->
+          <div id="train-feedback" style="opacity:0;transition:opacity 0.4s ease">
+            <div class="insight-card" style="padding:16px;text-align:left">
+              <span class="ca-tl"></span><span class="ca-br"></span>
+              <div id="train-fb-label" class="mono-sm" style="color:var(--color-error);margin-bottom:6px;font-size:8px">Loss Function</div>
+              <p id="train-fb-text" style="font-size:12px">Guessed 5, truth is 3. Error calculated. Now adjust the weights &mdash; strengthen the connections for pixels that define a "3."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step buttons -->
+        <div class="nn-bottom-row" id="nn-steps">
+          <div class="nn-step step-active" id="nn-step-1"><div class="nn-step-num">1</div><span class="nn-step-text">Feed data</span></div>
+          <span class="nn-step-arrow">&rarr;</span>
+          <div class="nn-step" id="nn-step-2"><div class="nn-step-num">2</div><span class="nn-step-text">Guess</span></div>
+          <span class="nn-step-arrow">&rarr;</span>
+          <div class="nn-step" id="nn-step-3"><div class="nn-step-num">3</div><span class="nn-step-text">Error</span></div>
+          <span class="nn-step-arrow">&rarr;</span>
+          <div class="nn-step" id="nn-step-4"><div class="nn-step-num">4</div><span class="nn-step-text">Adjust</span></div>
+          <span class="nn-step-arrow">&rarr;</span>
+          <div class="nn-step" id="nn-step-5"><div class="nn-step-num" style="font-size:14px">&infin;</div><span class="nn-step-text">Repeat</span></div>
+        </div>
+        <div class="nn-hint" id="nn-hint">Press &rarr; to step through</div>
       </div>
-      <div class="nn-hint" id="nn-hint">Press &rarr; to step through</div>
     </div>
   </div>
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
@@ -741,64 +755,83 @@ function revealNL() {
   nlShown = true;
 }
 
-// ===== NN Animation =====
-function setActive(n) { for (let i=1;i<=5;i++) document.getElementById(`nn-step-${i}`).classList.toggle('step-active', i===n); }
-function op(id, v, ms) { const e=document.getElementById(id); if(e){e.style.transition=`opacity ${ms}ms ease`; e.setAttribute('opacity',v);} }
-function sweep(id, o, d, c) {
-  const t=setTimeout(()=>{const g=document.getElementById(id);g.style.transition='opacity 400ms ease';g.setAttribute('opacity',o);if(c)g.querySelectorAll('line').forEach(l=>l.setAttribute('stroke',c));},d);
-  timers.push(t);
-}
-function lightH(gid, d) {
-  const t=setTimeout(()=>{document.querySelectorAll(`#${gid} .nn-hn`).forEach((n,i)=>{const t2=setTimeout(()=>{n.setAttribute('fill','rgba(176,141,120,0.1)');n.setAttribute('stroke','rgba(176,141,120,0.4)');},i*50);timers.push(t2);});},d);
-  timers.push(t);
-}
+// ===== NN Training Animation (Pixel Grid) =====
+function setActive(n) { for(let i=1;i<=5;i++) document.getElementById(`nn-step-${i}`).classList.toggle('step-active',i===n); }
 
 function initNN() {
   clr(); setActive(1);
   document.getElementById('nn-hint').style.opacity='0.6';
-  document.querySelectorAll('#input-nodes .nn-in').forEach(n=>{n.setAttribute('fill','none');n.setAttribute('stroke','rgba(18,18,18,0.12)');});
-  document.querySelectorAll('#input-nodes .nn-it').forEach(t=>t.setAttribute('fill','rgba(18,18,18,0.3)'));
-  ['hidden1-nodes','hidden2-nodes'].forEach(g=>document.querySelectorAll(`#${g} .nn-hn`).forEach(n=>{n.setAttribute('fill','none');n.setAttribute('stroke','rgba(18,18,18,0.12)');}));
-  document.getElementById('conn-ih1').setAttribute('opacity','0.06');
-  document.getElementById('conn-ih1').querySelectorAll('line').forEach(l=>l.setAttribute('stroke','#121212'));
-  document.getElementById('conn-h1h2').setAttribute('opacity','0.04');
-  document.getElementById('conn-h2o').setAttribute('opacity','0.04');
-  ['conn-h1h2','conn-h2o'].forEach(id=>document.getElementById(id).querySelectorAll('line').forEach(l=>l.setAttribute('stroke','#B08D78')));
-  ['output-wrong','output-correct','nn-loss','nn-bp-label','nn-ok-label','conn-trained'].forEach(id=>document.getElementById(id).setAttribute('opacity','0'));
+  document.getElementById('train-guess').textContent='?';
+  document.getElementById('train-guess').style.color='rgba(18,18,18,0.15)';
+  document.getElementById('train-feedback').style.opacity='0';
+  document.getElementById('train-msg').textContent='We feed the pixel values into the network. Each pixel is a number \u2014 dark pixels are close to 1.0, light pixels close to 0.0.';
+  document.querySelectorAll('#pixel-grid .px').forEach(p=>p.classList.remove('highlight'));
+  document.getElementById('pixel-grid').style.opacity='1';
 }
 
 function nnStep(s) {
   clr();
-  if (s===1) {
-    setActive(1); document.getElementById('nn-hint').style.opacity='0';
-    const ns=document.querySelectorAll('#input-nodes .nn-in');
-    const ts=document.querySelectorAll('#input-nodes .nn-it');
-    ns.forEach((n,i)=>{const t=setTimeout(()=>{n.setAttribute('fill','rgba(176,141,120,0.12)');n.setAttribute('stroke','rgba(176,141,120,0.5)');if(ts[i])ts[i].setAttribute('fill','#121212');},i*80);timers.push(t);});
+  if(s===1) {
+    // Feed data in - highlight pixels sequentially
+    setActive(1);
+    document.getElementById('nn-hint').style.opacity='0';
+    document.getElementById('train-msg').textContent='Feeding pixel data into the network. Each of these 35 values becomes an input. The dark pixels (high values) carry the shape of the "3."';
+    const pxs=document.querySelectorAll('#pixel-grid .px');
+    pxs.forEach((p,i)=>{
+      const t=setTimeout(()=>{
+        if(parseFloat(p.dataset.v)>0.4) p.classList.add('highlight');
+      },i*30);
+      timers.push(t);
+    });
   }
-  if (s===2) {
+  if(s===2) {
+    // Random guess - wrong
     setActive(2);
-    sweep('conn-ih1','0.15',0); lightH('hidden1-nodes',300);
-    sweep('conn-h1h2','0.12',500); lightH('hidden2-nodes',800);
-    sweep('conn-h2o','0.12',1000);
-    const t=setTimeout(()=>op('output-wrong','1',400),1300); timers.push(t);
+    document.getElementById('train-msg').textContent='The network processes the pixels through its layers and makes a guess. But the weights are random \u2014 it has no idea what a "3" looks like yet.';
+    const g=document.getElementById('train-guess');
+    g.textContent='5';
+    g.style.color='var(--color-error)';
+    g.style.fontSize='56px';
   }
-  if (s===3) { setActive(3); op('nn-loss','1',400); }
-  if (s===4) {
-    setActive(4); op('nn-loss','0',300); op('nn-bp-label','1',400);
-    sweep('conn-h2o','0.2',200,'#D97755'); sweep('conn-h1h2','0.2',600,'#D97755'); sweep('conn-ih1','0.2',1000,'#D97755');
-    const t=setTimeout(()=>{
-      ['conn-h2o','conn-h1h2','conn-ih1'].forEach(id=>{const g=document.getElementById(id);g.setAttribute('opacity','0.1');g.querySelectorAll('line').forEach(l=>l.setAttribute('stroke','#B08D78'));});
-      const h1=document.querySelectorAll('#hidden1-nodes .nn-hn');
-      h1[2].setAttribute('fill','rgba(176,141,120,0.2)');h1[2].setAttribute('stroke','rgba(176,141,120,0.6)');
-      h1[3].setAttribute('fill','rgba(176,141,120,0.15)');h1[3].setAttribute('stroke','rgba(176,141,120,0.5)');
-      const h2=document.querySelectorAll('#hidden2-nodes .nn-hn');
-      h2[1].setAttribute('fill','rgba(176,141,120,0.2)');h2[1].setAttribute('stroke','rgba(176,141,120,0.6)');
-      h2[2].setAttribute('fill','rgba(176,141,120,0.15)');h2[2].setAttribute('stroke','rgba(176,141,120,0.5)');
-    },1600); timers.push(t);
+  if(s===3) {
+    // Calculate error
+    setActive(3);
+    document.getElementById('train-msg').textContent='Wrong! It guessed 5, but the truth is 3. The loss function calculates exactly how wrong it was. Under the hood: linear regression and multivariable calculus.';
+    document.getElementById('train-feedback').style.opacity='1';
+    document.getElementById('train-fb-label').textContent='LOSS FUNCTION';
+    document.getElementById('train-fb-label').style.color='var(--color-error)';
+    document.getElementById('train-fb-text').textContent='Guessed: 5 | Truth: 3 \u2014 Error signal generated. The network now knows it was wrong and by how much.';
   }
-  if (s===5) {
-    setActive(5); op('nn-bp-label','0',200); op('output-wrong','0',300);
-    const t=setTimeout(()=>{op('conn-trained','0.6',500);op('output-correct','1',500);op('nn-ok-label','1',500);},400);timers.push(t);
+  if(s===4) {
+    // Adjust weights - highlight key pixels
+    setActive(4);
+    document.getElementById('train-msg').textContent='Backpropagation: go back through the network and adjust the weights. The dark pixels that form the "3" shape need stronger connections to the output "3."';
+    document.getElementById('train-fb-label').textContent='ADJUSTING WEIGHTS';
+    document.getElementById('train-fb-label').style.color='var(--color-clay)';
+    document.getElementById('train-fb-text').textContent='Strengthen synapses for pixels that define the "3" pattern. Weaken connections that led to "5." This is Hebb\u2019s rule in action \u2014 neurons that fire together, wire together.';
+    // Highlight the key "3" pixels in clay
+    const pxs=document.querySelectorAll('#pixel-grid .px');
+    pxs.forEach((p,i)=>{
+      const v=parseFloat(p.dataset.v);
+      if(v>0.4){
+        const t=setTimeout(()=>{
+          p.style.borderColor='#B08D78';
+          p.style.boxShadow='inset 0 0 0 2px rgba(176,141,120,0.5), 0 0 8px rgba(176,141,120,0.3)';
+        },i*25);
+        timers.push(t);
+      }
+    });
+  }
+  if(s===5) {
+    // Repeat - correct output
+    setActive(5);
+    document.getElementById('train-msg').textContent='After thousands of iterations with different handwritten 3s, the network learns which pixel patterns define a "3." It can now recognize any 3 \u2014 even one it\u2019s never seen.';
+    const g=document.getElementById('train-guess');
+    g.textContent='3';
+    g.style.color='var(--color-clay)';
+    document.getElementById('train-fb-label').textContent='TRAINED';
+    document.getElementById('train-fb-label').style.color='var(--color-clay)';
+    document.getElementById('train-fb-text').textContent='The network knows: when these pixels are dark in this pattern, it\u2019s a 3. No understanding \u2014 just statistical correlations strengthened through repetition. Glorified statistics.';
   }
 }
 </script>
