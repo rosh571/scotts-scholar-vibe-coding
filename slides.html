@@ -339,11 +339,11 @@
         <h3 style="margin-top:4px">The Neuron &mdash; Nature's Learning Machine</h3>
         <div class="insight-card" style="margin-top:4px">
           <span class="ca-tl"></span><span class="ca-br"></span>
-          <div class="mono-sm" style="color:var(--color-clay);margin-bottom:12px">Hebb's Rule (1949)</div>
+          <div class="mono-sm" style="color:var(--color-clay);margin-bottom:12px">Hebbian Learning (1949)</div>
           <p style="font-family:var(--font-serif);font-style:italic;font-size:18px;color:rgba(248,247,244,0.85);margin-bottom:12px;line-height:1.4">"Neurons that fire together, wire together."</p>
-          <p>When two neurons activate simultaneously and repeatedly, the synapse between them strengthens. This is the biological basis for all learning &mdash; and the principle that artificial neural networks replicate through backpropagation.</p>
+          <p>This popular summary of Donald Hebb's 1949 principle captures the idea: when two neurons activate simultaneously and repeatedly, the synapse between them strengthens. This biological insight &mdash; that learning happens by strengthening connections &mdash; inspired how artificial neural networks are designed.</p>
         </div>
-        <p class="bio-caption">Your neurons form connections called <strong>synapses</strong>. When you learn, certain synaptic pathways <strong>strengthen</strong> through repetition &mdash; a process called <strong>long-term potentiation (LTP)</strong>. A baby's brain starts with random synaptic weights, then strengthens the right pathways and <strong>prunes</strong> the wrong ones through constant data. AI works the same way.</p>
+        <p class="bio-caption">Your neurons form connections called <strong>synapses</strong>. When you learn, certain synaptic pathways <strong>strengthen</strong> through repetition &mdash; a process called <strong>long-term potentiation (LTP)</strong>. A baby's brain has basic architecture pre-wired, but higher-order connections are largely unrefined &mdash; they get strengthened and <strong>pruned</strong> through constant sensory data. AI training follows the same intuition.</p>
       </div>
     </div>
   </div>
@@ -878,7 +878,7 @@ function nnStep(s) {
   }
   if(s===3) {
     setActive(3);
-    document.getElementById('train-msg').textContent='Wrong! It guessed 5, but the answer is 3. The loss function measures exactly how wrong it was. Under the hood: linear regression and multivariable calculus.';
+    document.getElementById('train-msg').textContent='Wrong! It guessed 5, but the answer is 3. The loss function measures exactly how wrong it was. Under the hood: calculus and optimization \u2014 computing gradients to figure out which weights to change and by how much.';
     document.getElementById('train-feedback').style.opacity='1';
     document.getElementById('train-fb-label').textContent='LOSS FUNCTION';
     document.getElementById('train-fb-label').style.color='var(--color-error)';
@@ -886,7 +886,7 @@ function nnStep(s) {
   }
   if(s===4) {
     setActive(4);
-    document.getElementById('train-msg').textContent='Backpropagation: go backward through the network and adjust the weights. The pixels that form the "3" shape need stronger connections. This is Hebb\u2019s rule \u2014 neurons that fire together, wire together.';
+    document.getElementById('train-msg').textContent='Backpropagation: go backward through the network and adjust the weights. The dark pixels that form the "3" shape need stronger connections to the output "3." Same intuition as Hebbian learning \u2014 strengthen the pathways that lead to the right answer.';
     document.getElementById('train-fb-label').textContent='ADJUSTING WEIGHTS';
     document.getElementById('train-fb-label').style.color='var(--color-clay)';
     document.getElementById('train-fb-text').textContent='Strengthen connections for "3" pixels. Weaken connections that led to "5."';

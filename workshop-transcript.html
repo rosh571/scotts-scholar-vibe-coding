@@ -172,7 +172,7 @@
       <li>At the very bottom, you have <strong>hardware</strong> — the physical chips, circuits, transistors.</li>
       <li>On top of that sits <strong>machine code</strong> — raw instructions the hardware understands, written in ones and zeros.</li>
       <li>Above that, an <strong>operating system</strong> orchestrates everything — Windows, macOS, Linux.</li>
-      <li>The operating system exposes <strong>programming languages</strong> — Python, JavaScript, C++ — that let humans write instructions in something closer to English.</li>
+      <li>The operating system provides the platform on which <strong>programming languages</strong> — Python, JavaScript, C++ — are built, letting humans write instructions in something closer to English.</li>
       <li>And finally, those programming languages are what produce the <strong>applications</strong> we all use every day.</li>
     </ul>
 
@@ -199,7 +199,7 @@
 
     <h3>The Baby Analogy</h3>
 
-    <p>Think about a baby learning to recognize numbers for the first time. When a baby is born, their neurons are essentially a blank canvas. The connections between neurons — the patterns that fire — are completely random. This is why babies do bizarre, unpredictable things. Their brain hasn't learned any patterns yet.</p>
+    <p>Think about a baby learning to recognize numbers for the first time. When a baby is born, their brain has some basic architecture pre-wired — reflexes, sensory processing, the fundamentals. But the higher-order connections — the ones responsible for recognizing faces, learning language, understanding numbers — those are largely unrefined. The specific patterns haven't been learned yet. This is why babies do bizarre, unpredictable things. Their higher-level neural pathways haven't been trained.</p>
 
     <p>Now, what do parents do? They constantly teach. They hold up flashcards: "This is the number one. This is the number two." They point at things. The baby is also absorbing visual data, auditory data, sensory data — a constant flood of information pouring in. Over time, through sheer repetition and correction, the baby's neurons start forming reliable patterns. Certain neural pathways strengthen. The baby starts to <em>know</em> that when they see a particular shape, that's a "3."</p>
 
@@ -218,7 +218,7 @@
       <li><strong>Each pixel becomes a neuron.</strong> Each of those 35 pixels becomes its own artificial neuron in the input layer of the network. So the network is literally looking at 35 individual brightness values. That's all it has to work with.</li>
       <li><strong>Feed it many examples.</strong> You show the network handwritten 3s from hundreds of different people. Every person writes a "3" slightly differently, but each example is still just a grid of pixel values. The variety is what teaches the network what a "3" actually looks like across all the ways people write it.</li>
       <li><strong>The data flows forward — and it guesses wrong.</strong> Those pixel values flow through hidden layers — artificial neurons connected to each other by <strong>weights</strong> — and an answer comes out the other end. The first time through, those weights are completely random, so the network might guess "5." That's wrong. Just like a baby randomly pointing at a flashcard.</li>
-      <li><strong>The loss function tells it how wrong it was.</strong> We use something called a <strong>loss function</strong> to say: "No, that was a 3, not a 5. Here's how far off you were." The math behind this is linear regression and multivariable calculus, but you don't need to know the details. What matters is that the network now has a precise measurement of its error.</li>
+      <li><strong>The loss function tells it how wrong it was.</strong> We use something called a <strong>loss function</strong> to say: "No, that was a 3, not a 5. Here's how far off you were." The math behind this is calculus and optimization — computing gradients to figure out which weights to change and by how much. You don't need to know the details. What matters is that the network now has a precise measurement of its error.</li>
       <li><strong>Backpropagation adjusts the weights.</strong> Here's the key step. We go <em>back</em> through the network and adjust the weights — a process called <strong>backpropagation.</strong> And the insight is intuitive: the dark pixels that form the shape of the "3" need <em>stronger</em> weights connecting them to the output "3." When a specific pixel is consistently shaded in examples of 3s, that pixel needs to be more correlated — needs a stronger weight — for predicting a three. This is just statistics. You strengthen the connections that correlate with the right answer.</li>
       <li><strong>Repeat thousands of times.</strong> You do this over and over with different handwritten 3s. Each cycle, the weights get a little better. Eventually the network accurately recognizes a 3 — even one it's never seen before, in someone's messy handwriting — because it has learned which pixels and which patterns are most important.</li>
     </ol>
@@ -231,15 +231,15 @@
 
     <p>The network is finding statistical patterns in data — nothing more, nothing less. When you scale this up massively — billions of parameters, trained on the entire internet's worth of text — you get something like Claude or ChatGPT. It feels human. It writes eloquently. It can code. But underneath, it's the same fundamental process: pattern matching through weighted connections, refined by feedback.</p>
 
-    <h3>Hebb's Rule: "Neurons That Fire Together, Wire Together"</h3>
+    <h3>Hebbian Learning: "Neurons That Fire Together, Wire Together"</h3>
 
-    <p>There's a neuroscience principle from 1949 called Hebb's Rule that puts this beautifully: <strong>"Neurons that fire together, wire together."</strong> When two neurons activate at the same time, repeatedly, the synapse between them gets stronger. This is the biological basis for learning &mdash; and it's exactly what backpropagation does artificially.</p>
+    <p>In 1949, Donald Hebb proposed a principle about how the brain learns. A popular summary of his idea, coined later by neuroscientist Carla Shatz, captures it perfectly: <strong>"Neurons that fire together, wire together."</strong> When two neurons activate at the same time, repeatedly, the synapse between them gets stronger. This is a fundamental biological basis for learning.</p>
 
     <p>When you teach a baby that the written shape "3" is the number three, the neurons that recognize that particular curve pattern and the neurons that represent "three" fire together. Over time, that connection strengthens. The baby doesn't have to think about it anymore &mdash; it just <em>knows</em>.</p>
 
-    <p>In an artificial neural network, backpropagation does the same thing. When the correct pathway fires and produces the right answer, the weights along that pathway get strengthened. When the wrong pathway fires, those weights get weakened. It's Hebbian learning, implemented in mathematics.</p>
+    <p>This biological insight &mdash; that learning happens by strengthening connections between things that co-activate &mdash; is the intuition behind artificial neural networks. Backpropagation works differently in its mechanics (it uses error gradients and calculus rather than simple co-activation), but the core idea rhymes: strengthen the pathways that lead to the right answer, weaken the ones that don't.</p>
 
-    <p>This is why AI is glorified statistics. There's no understanding &mdash; just connections that got strengthened because they co-fired with the right answer enough times.</p>
+    <p>This is why AI is glorified statistics. There's no understanding &mdash; just connections that got strengthened because they correlated with the right answer enough times.</p>
 
     <div class="section-divider"></div>
 
