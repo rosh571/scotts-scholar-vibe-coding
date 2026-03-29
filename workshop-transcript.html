@@ -209,17 +209,18 @@
 
     <p>The answer: you do exactly what parents do with babies.</p>
 
-    <p>The very first breakthrough application of neural networks was literally this — teaching a computer to recognize handwritten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.</p>
+    <p>The very first breakthrough application of neural networks was literally this — teaching a computer to recognize handwritten digits. So let's walk through it with one number: <strong>teaching a computer to recognize a handwritten 3.</strong></p>
 
     <p>Here's how it works, step by step:</p>
 
     <ol>
-      <li><strong>You start with random connections.</strong> Just like a newborn's brain, when you create a neural network, all the "weights" — the strength of connections between artificial neurons — are completely random. The network knows nothing.</li>
-      <li><strong>You feed it data.</strong> You show it thousands of images of handwritten numbers. Each image is just a grid of pixels — dark pixels where ink is, light pixels where it isn't. These pixel values are the input.</li>
-      <li><strong>It makes a guess.</strong> The data flows through layers of artificial neurons, each applying their random weights, and an answer comes out the other end. At first, this answer is nonsense — just like a baby randomly pointing at a card.</li>
-      <li><strong>You tell it the right answer.</strong> You compare the network's guess to the truth. It guessed "7" but the answer was "3." You calculate exactly how wrong it was — this is called the <strong>loss function.</strong> It's a mathematical measure of error.</li>
-      <li><strong>You adjust the connections.</strong> Here's the key step. That error signal flows backward through the network, and every single weight gets nudged slightly — "you should have fired a little more here, a little less there" — so that next time it sees a similar "3," it's slightly more likely to get it right. This is called <strong>backpropagation.</strong></li>
-      <li><strong>You repeat this thousands of times.</strong> Each time, the weights get a little better. Patterns emerge. The network learns that certain pixel arrangements correspond to certain numbers. It's not memorizing — it's generalizing. It can recognize a "3" it's never seen before, written in someone's messy handwriting.</li>
+      <li><strong>Start with the image as data.</strong> Imagine a small 5-by-7 pixel grid. Each pixel has a grayscale value — 0.0 for white, 1.0 for black, and everything in between. When someone writes a "3," certain pixels are dark and others are light. That grid of 35 numbers <em>is</em> the input data. Nothing fancy — just numbers.</li>
+      <li><strong>Each pixel becomes a neuron.</strong> Each of those 35 pixels becomes its own artificial neuron in the input layer of the network. So the network is literally looking at 35 individual brightness values. That's all it has to work with.</li>
+      <li><strong>Feed it many examples.</strong> You show the network handwritten 3s from hundreds of different people. Every person writes a "3" slightly differently, but each example is still just a grid of pixel values. The variety is what teaches the network what a "3" actually looks like across all the ways people write it.</li>
+      <li><strong>The data flows forward — and it guesses wrong.</strong> Those pixel values flow through hidden layers — artificial neurons connected to each other by <strong>weights</strong> — and an answer comes out the other end. The first time through, those weights are completely random, so the network might guess "5." That's wrong. Just like a baby randomly pointing at a flashcard.</li>
+      <li><strong>The loss function tells it how wrong it was.</strong> We use something called a <strong>loss function</strong> to say: "No, that was a 3, not a 5. Here's how far off you were." The math behind this is linear regression and multivariable calculus, but you don't need to know the details. What matters is that the network now has a precise measurement of its error.</li>
+      <li><strong>Backpropagation adjusts the weights.</strong> Here's the key step. We go <em>back</em> through the network and adjust the weights — a process called <strong>backpropagation.</strong> And the insight is intuitive: the dark pixels that form the shape of the "3" need <em>stronger</em> weights connecting them to the output "3." When a specific pixel is consistently shaded in examples of 3s, that pixel needs to be more correlated — needs a stronger weight — for predicting a three. This is just statistics. You strengthen the connections that correlate with the right answer.</li>
+      <li><strong>Repeat thousands of times.</strong> You do this over and over with different handwritten 3s. Each cycle, the weights get a little better. Eventually the network accurately recognizes a 3 — even one it's never seen before, in someone's messy handwriting — because it has learned which pixels and which patterns are most important.</li>
     </ol>
 
     <h3>The Key Insight</h3>
