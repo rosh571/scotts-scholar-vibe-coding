@@ -75,9 +75,10 @@
     .stack-bracket-label { position: absolute; right: -120px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-clay); white-space: nowrap; writing-mode: vertical-rl; }
 
     /* Bio Neuron slide */
-    .bio-neuron-layout { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; max-width: 900px; }
-    .bio-neuron-layout .bio-caption { font-size: 14px; line-height: 1.6; color: var(--color-muted); text-align: center; max-width: 680px; }
+    .bio-neuron-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; width: 100%; max-width: 1100px; align-items: center; max-height: calc(100vh - 140px); overflow: hidden; }
+    .bio-neuron-layout .bio-caption { font-size: 13px; line-height: 1.55; color: var(--color-muted); max-width: 480px; }
     .bio-neuron-layout .bio-caption strong { color: var(--color-ink); font-weight: 500; }
+    .bio-neuron-right { display: flex; flex-direction: column; gap: 20px; }
 
     /* NN Animation slide */
     .nn-anim-layout { display: flex; flex-direction: column; align-items: center; gap: 32px; width: 100%; max-width: 780px; }
@@ -116,6 +117,24 @@
     .principle-card h4 { font-family: var(--font-serif); font-weight: 400; font-size: 17px; letter-spacing: -0.02em; margin-bottom: 8px; }
     .principle-card p { font-size: 13px; line-height: 1.55; color: var(--color-muted); }
 
+    /* Digits to Language slide */
+    .dtl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; width: 100%; max-width: 1100px; align-items: start; }
+    .dtl-col { display: flex; flex-direction: column; gap: 16px; }
+    .dtl-col .caption { font-size: 13px; line-height: 1.55; color: var(--color-muted); max-width: 440px; }
+    .dtl-bottom-note { grid-column: 1 / -1; text-align: center; margin-top: 8px; }
+
+    /* Claude Code slide */
+    .claude-layout { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; max-width: 800px; text-align: center; }
+    .terminal-card { background: var(--color-ink); padding: 28px 32px; position: relative; width: 100%; text-align: left; }
+    .terminal-dots { display: flex; gap: 6px; margin-bottom: 18px; }
+    .terminal-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .terminal-prompt { font-family: var(--font-mono); font-size: 13px; color: rgba(248,247,244,0.85); margin-bottom: 24px; padding: 12px 16px; background: rgba(248,247,244,0.04); border: 1px solid rgba(248,247,244,0.06); }
+    .terminal-list { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+    .terminal-list li { display: flex; flex-direction: column; gap: 4px; }
+    .terminal-list .tl-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--color-clay); }
+    .terminal-list .tl-desc { font-family: var(--font-sans); font-size: 14px; line-height: 1.5; color: rgba(248,247,244,0.6); }
+    .claude-tagline { font-family: var(--font-serif); font-style: italic; color: var(--color-clay); font-size: 16px; font-weight: 300; }
+
     /* Nav */
     .nav-dots { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 50; }
     .nav-dot { width: 8px; height: 8px; border: 1px solid var(--color-ink); background: transparent; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
@@ -143,7 +162,7 @@
 
 <!-- ===== SLIDE 1: Abstraction Stack ===== -->
 <div class="slide" id="slide-1">
-  <div class="slide-header"><span class="mono-label">The Paradigm Shift</span><span class="slide-number">01 / 06</span></div>
+  <div class="slide-header"><span class="mono-label">The Paradigm Shift</span><span class="slide-number">01 / 08</span></div>
   <div class="slide-content">
     <div class="corner-accents"></div>
     <div class="grid-2col">
@@ -192,109 +211,92 @@
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1 &mdash; Press &rarr;</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
 </div>
 
-<!-- ===== SLIDE 2: Biological Neuron / Baby Analogy ===== -->
+<!-- ===== SLIDE 2: Biological Neuron + Hebb's Rule (Two-Column) ===== -->
 <div class="slide" id="slide-2">
-  <div class="slide-header"><span class="mono-label">The Baby Analogy</span><span class="slide-number">02 / 06</span></div>
+  <div class="slide-header"><span class="mono-label">The Baby Analogy</span><span class="slide-number">02 / 08</span></div>
   <div class="slide-content">
     <div class="corner-accents"></div>
     <div class="bio-neuron-layout">
-      <div style="text-align:center">
-        <div class="mono-sm" style="margin-bottom:12px">How learning works</div>
-        <div class="divider" style="margin:0 auto 16px"></div>
-        <h2>The <span class="clay italic">Neuron</span> &mdash; Nature's Learning Machine</h2>
+      <!-- LEFT: Neuron SVG -->
+      <div>
+        <svg viewBox="0 0 700 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;max-height:55vh">
+          <!-- Dendrites -->
+          <g opacity="0.7">
+            <path d="M120 50 Q155 85 190 110" stroke="#B08D78" stroke-width="2" fill="none"/>
+            <path d="M100 80 Q140 95 190 115" stroke="#B08D78" stroke-width="1.5" fill="none"/>
+            <path d="M110 35 Q145 60 175 85" stroke="#B08D78" stroke-width="1.2" fill="none"/>
+            <line x1="118" y1="52" x2="108" y2="42" stroke="#B08D78" stroke-width="0.8"/><circle cx="108" cy="42" r="2" fill="#B08D78"/>
+            <line x1="128" y1="60" x2="120" y2="48" stroke="#B08D78" stroke-width="0.8"/><circle cx="120" cy="48" r="2" fill="#B08D78"/>
+            <line x1="105" y1="78" x2="94" y2="72" stroke="#B08D78" stroke-width="0.8"/><circle cx="94" cy="72" r="2" fill="#B08D78"/>
+            <line x1="114" y1="36" x2="106" y2="26" stroke="#B08D78" stroke-width="0.8"/><circle cx="106" cy="26" r="2" fill="#B08D78"/>
+            <path d="M80 150 Q130 140 190 135" stroke="#B08D78" stroke-width="2" fill="none"/>
+            <path d="M90 130 Q135 128 190 130" stroke="#B08D78" stroke-width="1.3" fill="none"/>
+            <line x1="88" y1="132" x2="78" y2="124" stroke="#B08D78" stroke-width="0.8"/><circle cx="78" cy="124" r="2" fill="#B08D78"/>
+            <line x1="96" y1="140" x2="84" y2="138" stroke="#B08D78" stroke-width="0.8"/><circle cx="84" cy="138" r="2" fill="#B08D78"/>
+            <path d="M105 215 Q150 200 190 175" stroke="#B08D78" stroke-width="2" fill="none"/>
+            <path d="M120 230 Q160 210 190 180" stroke="#B08D78" stroke-width="1.3" fill="none"/>
+            <path d="M85 210 Q125 205 165 190" stroke="#B08D78" stroke-width="1" fill="none"/>
+            <line x1="108" y1="213" x2="96" y2="218" stroke="#B08D78" stroke-width="0.8"/><circle cx="96" cy="218" r="2" fill="#B08D78"/>
+            <line x1="118" y1="225" x2="110" y2="234" stroke="#B08D78" stroke-width="0.8"/><circle cx="110" cy="234" r="2" fill="#B08D78"/>
+          </g>
+          <!-- Soma -->
+          <ellipse cx="240" cy="145" rx="55" ry="60" fill="rgba(176,141,120,0.07)" stroke="#B08D78" stroke-width="1.8"/>
+          <!-- Nucleus -->
+          <circle cx="240" cy="145" r="24" fill="rgba(176,141,120,0.1)" stroke="rgba(176,141,120,0.5)" stroke-width="1"/>
+          <circle cx="236" cy="141" r="8" fill="rgba(176,141,120,0.18)" stroke="rgba(176,141,120,0.35)" stroke-width="0.5"/>
+          <!-- Axon hillock -->
+          <path d="M295 145 Q315 145 340 148" stroke="#B08D78" stroke-width="2.5" fill="none"/>
+          <!-- Axon -->
+          <line x1="340" y1="148" x2="580" y2="168" stroke="rgba(18,18,18,0.15)" stroke-width="2"/>
+          <!-- Myelin sheaths -->
+          <ellipse cx="375" cy="152" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(2 375 152)"/>
+          <ellipse cx="430" cy="157" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 430 157)"/>
+          <ellipse cx="485" cy="162" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 485 162)"/>
+          <ellipse cx="540" cy="166" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 540 166)"/>
+          <!-- Axon terminals -->
+          <g transform="translate(572,162)">
+            <line x1="0" y1="6" x2="22" y2="-8" stroke="#B08D78" stroke-width="1.2"/>
+            <line x1="0" y1="6" x2="26" y2="6" stroke="#B08D78" stroke-width="1.2"/>
+            <line x1="0" y1="6" x2="22" y2="20" stroke="#B08D78" stroke-width="1.2"/>
+            <circle cx="24" cy="-9" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
+            <circle cx="28" cy="6" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
+            <circle cx="24" cy="21" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
+            <circle cx="31" cy="-7" r="1.2" fill="#B08D78" opacity="0.6"/>
+            <circle cx="33" cy="-4" r="1.2" fill="#B08D78" opacity="0.4"/>
+            <circle cx="35" cy="7" r="1.2" fill="#B08D78" opacity="0.6"/>
+            <circle cx="33" cy="10" r="1.2" fill="#B08D78" opacity="0.4"/>
+            <circle cx="31" cy="23" r="1.2" fill="#B08D78" opacity="0.6"/>
+            <circle cx="33" cy="20" r="1.2" fill="#B08D78" opacity="0.4"/>
+          </g>
+          <!-- Signal arrow -->
+          <path d="M310 195 L555 210" stroke="rgba(176,141,120,0.3)" stroke-width="1" stroke-dasharray="5 3"/>
+          <polygon points="555,210 548,206 549,215" fill="rgba(176,141,120,0.3)"/>
+          <!-- Labels -->
+          <text x="95" y="22" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">DENDRITES</text>
+          <text x="95" y="32" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(receive input signals)</text>
+          <text x="205" y="240" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">SOMA</text>
+          <text x="190" y="250" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(processes &amp; integrates)</text>
+          <text x="420" y="200" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">AXON</text>
+          <text x="400" y="210" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(transmits signal)</text>
+          <text x="580" y="200" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">SYNAPSE</text>
+          <text x="580" y="210" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(outputs to next neuron)</text>
+          <text x="410" y="138" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1" opacity="0.6">MYELIN SHEATH</text>
+          <text x="60" y="55" font-family="JetBrains Mono, monospace" font-size="6" fill="var(--color-muted)" letter-spacing="1" opacity="0.5">DENDRITIC SPINES</text>
+        </svg>
       </div>
-
-      <svg viewBox="0 0 700 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
-        <!-- Dendrites -->
-        <g opacity="0.7">
-          <path d="M120 50 Q155 85 190 110" stroke="#B08D78" stroke-width="2" fill="none"/>
-          <path d="M100 80 Q140 95 190 115" stroke="#B08D78" stroke-width="1.5" fill="none"/>
-          <path d="M110 35 Q145 60 175 85" stroke="#B08D78" stroke-width="1.2" fill="none"/>
-          <line x1="118" y1="52" x2="108" y2="42" stroke="#B08D78" stroke-width="0.8"/><circle cx="108" cy="42" r="2" fill="#B08D78"/>
-          <line x1="128" y1="60" x2="120" y2="48" stroke="#B08D78" stroke-width="0.8"/><circle cx="120" cy="48" r="2" fill="#B08D78"/>
-          <line x1="105" y1="78" x2="94" y2="72" stroke="#B08D78" stroke-width="0.8"/><circle cx="94" cy="72" r="2" fill="#B08D78"/>
-          <line x1="114" y1="36" x2="106" y2="26" stroke="#B08D78" stroke-width="0.8"/><circle cx="106" cy="26" r="2" fill="#B08D78"/>
-
-          <path d="M80 150 Q130 140 190 135" stroke="#B08D78" stroke-width="2" fill="none"/>
-          <path d="M90 130 Q135 128 190 130" stroke="#B08D78" stroke-width="1.3" fill="none"/>
-          <line x1="88" y1="132" x2="78" y2="124" stroke="#B08D78" stroke-width="0.8"/><circle cx="78" cy="124" r="2" fill="#B08D78"/>
-          <line x1="96" y1="140" x2="84" y2="138" stroke="#B08D78" stroke-width="0.8"/><circle cx="84" cy="138" r="2" fill="#B08D78"/>
-
-          <path d="M105 215 Q150 200 190 175" stroke="#B08D78" stroke-width="2" fill="none"/>
-          <path d="M120 230 Q160 210 190 180" stroke="#B08D78" stroke-width="1.3" fill="none"/>
-          <path d="M85 210 Q125 205 165 190" stroke="#B08D78" stroke-width="1" fill="none"/>
-          <line x1="108" y1="213" x2="96" y2="218" stroke="#B08D78" stroke-width="0.8"/><circle cx="96" cy="218" r="2" fill="#B08D78"/>
-          <line x1="118" y1="225" x2="110" y2="234" stroke="#B08D78" stroke-width="0.8"/><circle cx="110" cy="234" r="2" fill="#B08D78"/>
-        </g>
-
-        <!-- Soma -->
-        <ellipse cx="240" cy="145" rx="55" ry="60" fill="rgba(176,141,120,0.07)" stroke="#B08D78" stroke-width="1.8"/>
-        <!-- Nucleus -->
-        <circle cx="240" cy="145" r="24" fill="rgba(176,141,120,0.1)" stroke="rgba(176,141,120,0.5)" stroke-width="1"/>
-        <circle cx="236" cy="141" r="8" fill="rgba(176,141,120,0.18)" stroke="rgba(176,141,120,0.35)" stroke-width="0.5"/>
-
-        <!-- Axon hillock -->
-        <path d="M295 145 Q315 145 340 148" stroke="#B08D78" stroke-width="2.5" fill="none"/>
-
-        <!-- Axon -->
-        <line x1="340" y1="148" x2="580" y2="168" stroke="rgba(18,18,18,0.15)" stroke-width="2"/>
-        <!-- Myelin sheaths -->
-        <ellipse cx="375" cy="152" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(2 375 152)"/>
-        <ellipse cx="430" cy="157" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 430 157)"/>
-        <ellipse cx="485" cy="162" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 485 162)"/>
-        <ellipse cx="540" cy="166" rx="25" ry="10" fill="rgba(176,141,120,0.05)" stroke="rgba(176,141,120,0.25)" stroke-width="1" transform="rotate(3 540 166)"/>
-        <!-- Nodes of Ranvier -->
-        <circle cx="402" cy="154" r="2.5" fill="#B08D78" opacity="0.5"/>
-        <circle cx="457" cy="159" r="2.5" fill="#B08D78" opacity="0.5"/>
-        <circle cx="512" cy="164" r="2.5" fill="#B08D78" opacity="0.5"/>
-        <circle cx="567" cy="168" r="2.5" fill="#B08D78" opacity="0.5"/>
-
-        <!-- Axon terminals -->
-        <g transform="translate(572,162)">
-          <line x1="0" y1="6" x2="22" y2="-8" stroke="#B08D78" stroke-width="1.2"/>
-          <line x1="0" y1="6" x2="26" y2="6" stroke="#B08D78" stroke-width="1.2"/>
-          <line x1="0" y1="6" x2="22" y2="20" stroke="#B08D78" stroke-width="1.2"/>
-          <circle cx="24" cy="-9" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
-          <circle cx="28" cy="6" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
-          <circle cx="24" cy="21" r="5.5" fill="rgba(176,141,120,0.18)" stroke="#B08D78" stroke-width="1"/>
-          <circle cx="31" cy="-7" r="1.2" fill="#B08D78" opacity="0.6"/>
-          <circle cx="33" cy="-4" r="1.2" fill="#B08D78" opacity="0.4"/>
-          <circle cx="35" cy="7" r="1.2" fill="#B08D78" opacity="0.6"/>
-          <circle cx="33" cy="10" r="1.2" fill="#B08D78" opacity="0.4"/>
-          <circle cx="31" cy="23" r="1.2" fill="#B08D78" opacity="0.6"/>
-          <circle cx="33" cy="20" r="1.2" fill="#B08D78" opacity="0.4"/>
-        </g>
-
-        <!-- Signal arrow -->
-        <path d="M310 195 L555 210" stroke="rgba(176,141,120,0.3)" stroke-width="1" stroke-dasharray="5 3"/>
-        <polygon points="555,210 548,206 549,215" fill="rgba(176,141,120,0.3)"/>
-
-        <!-- Labels -->
-        <text x="95" y="22" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">DENDRITES</text>
-        <text x="95" y="32" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(receive input signals)</text>
-        <text x="205" y="240" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">SOMA</text>
-        <text x="190" y="250" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(processes &amp; integrates)</text>
-        <text x="420" y="200" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">AXON</text>
-        <text x="400" y="210" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(transmits signal)</text>
-        <text x="580" y="200" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--color-clay)" letter-spacing="1.5" opacity="0.8">SYNAPSE</text>
-        <text x="580" y="210" font-family="Inter, sans-serif" font-size="8" fill="var(--color-muted)">(outputs to next neuron)</text>
-        <text x="410" y="138" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1" opacity="0.6">MYELIN SHEATH</text>
-        <text x="330" y="138" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1" opacity="0.6">AXON HILLOCK</text>
-        <!-- Dendritic spines callout -->
-        <text x="60" y="55" font-family="JetBrains Mono, monospace" font-size="6" fill="var(--color-muted)" letter-spacing="1" opacity="0.5">DENDRITIC SPINES</text>
-        <!-- Synaptic strength scale -->
-        <g transform="translate(80,270)">
-          <text x="0" y="0" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1">SYNAPTIC STRENGTH (WEIGHT)</text>
-          <line x1="0" y1="10" x2="40" y2="10" stroke="rgba(176,141,120,0.2)" stroke-width="0.5"/>
-          <line x1="48" y1="10" x2="88" y2="10" stroke="rgba(176,141,120,0.4)" stroke-width="1.2"/>
-          <line x1="96" y1="10" x2="136" y2="10" stroke="#B08D78" stroke-width="2.5"/>
-          <text x="0" y="22" font-family="Inter, sans-serif" font-size="7" fill="var(--color-muted)">weak</text>
-          <text x="120" y="22" font-family="Inter, sans-serif" font-size="7" fill="var(--color-muted)">strong</text>
-        </g>
-        <text x="420" y="280" font-family="JetBrains Mono, monospace" font-size="7" fill="var(--color-muted)" letter-spacing="1" opacity="0.5">NODES OF RANVIER</text>
-      </svg>
-
-      <p class="bio-caption">Your neurons form connections called <strong>synapses</strong>. When you learn, certain synaptic pathways <strong>strengthen</strong> through repetition &mdash; a process called <strong>long-term potentiation (LTP)</strong>. A baby's neurons start with random synaptic weights. Through constant data &mdash; visual, auditory, sensory &mdash; the brain strengthens the right pathways and <strong>prunes</strong> the wrong ones. AI works the same way.</p>
+      <!-- RIGHT: Hebb's Rule + Caption -->
+      <div class="bio-neuron-right">
+        <div class="mono-sm">How learning works</div>
+        <div class="divider"></div>
+        <h3 style="margin-top:4px">The Neuron &mdash; Nature's Learning Machine</h3>
+        <div class="insight-card" style="margin-top:4px">
+          <span class="ca-tl"></span><span class="ca-br"></span>
+          <div class="mono-sm" style="color:var(--color-clay);margin-bottom:12px">Hebb's Rule (1949)</div>
+          <p style="font-family:var(--font-serif);font-style:italic;font-size:18px;color:rgba(248,247,244,0.85);margin-bottom:12px;line-height:1.4">"Neurons that fire together, wire together."</p>
+          <p>When two neurons activate simultaneously and repeatedly, the synapse between them strengthens. This is the biological basis for all learning &mdash; and the principle that artificial neural networks replicate through backpropagation.</p>
+        </div>
+        <p class="bio-caption">Your neurons form connections called <strong>synapses</strong>. When you learn, certain synaptic pathways <strong>strengthen</strong> through repetition &mdash; a process called <strong>long-term potentiation (LTP)</strong>. A baby's brain starts with random synaptic weights, then strengthens the right pathways and <strong>prunes</strong> the wrong ones through constant data. AI works the same way.</p>
+      </div>
     </div>
   </div>
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
@@ -302,7 +304,7 @@
 
 <!-- ===== SLIDE 3: Artificial Neural Network + Backprop ===== -->
 <div class="slide" id="slide-3">
-  <div class="slide-header"><span class="mono-label">The Artificial Version</span><span class="slide-number">03 / 06</span></div>
+  <div class="slide-header"><span class="mono-label">The Artificial Version</span><span class="slide-number">03 / 08</span></div>
   <div class="slide-content">
     <div class="corner-accents"></div>
     <div class="nn-anim-layout">
@@ -411,9 +413,122 @@
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
 </div>
 
-<!-- ===== SLIDE 4: Why Does This Matter ===== -->
+<!-- ===== SLIDE 4: From Digits to Language ===== -->
 <div class="slide" id="slide-4">
-  <div class="slide-header"><span class="mono-label">The Takeaway</span><span class="slide-number">04 / 06</span></div>
+  <div class="slide-header"><span class="mono-label">Scaling Up</span><span class="slide-number">04 / 08</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div class="dtl-grid">
+      <!-- LEFT: Embeddings -->
+      <div class="dtl-col">
+        <div class="mono-sm">Words as Numbers</div>
+        <div class="divider"></div>
+        <h3>Embedding Matrices</h3>
+        <svg viewBox="0 0 360 260" fill="none" style="width:100%;max-width:360px">
+          <!-- Faint axes -->
+          <line x1="40" y1="240" x2="340" y2="240" stroke="rgba(18,18,18,0.08)" stroke-width="1"/>
+          <line x1="40" y1="240" x2="40" y2="20" stroke="rgba(18,18,18,0.08)" stroke-width="1"/>
+          <text x="190" y="256" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(18,18,18,0.2)" text-anchor="middle" letter-spacing="1">DIMENSION 1</text>
+          <text x="18" y="130" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(18,18,18,0.2)" text-anchor="middle" letter-spacing="1" transform="rotate(-90 18 130)">DIMENSION 2</text>
+          <!-- King / Queen cluster -->
+          <circle cx="150" cy="55" r="5" fill="rgba(176,141,120,0.25)" stroke="#B08D78" stroke-width="1"/>
+          <text x="163" y="52" font-family="Inter,sans-serif" font-size="11" fill="var(--color-ink)" font-weight="500">king</text>
+          <circle cx="200" cy="48" r="5" fill="rgba(176,141,120,0.25)" stroke="#B08D78" stroke-width="1"/>
+          <text x="213" y="45" font-family="Inter,sans-serif" font-size="11" fill="var(--color-ink)" font-weight="500">queen</text>
+          <!-- Man / Woman cluster -->
+          <circle cx="130" cy="115" r="5" fill="rgba(176,141,120,0.15)" stroke="rgba(176,141,120,0.5)" stroke-width="1"/>
+          <text x="143" y="112" font-family="Inter,sans-serif" font-size="11" fill="var(--color-ink)" font-weight="500">man</text>
+          <circle cx="180" cy="108" r="5" fill="rgba(176,141,120,0.15)" stroke="rgba(176,141,120,0.5)" stroke-width="1"/>
+          <text x="193" y="105" font-family="Inter,sans-serif" font-size="11" fill="var(--color-ink)" font-weight="500">woman</text>
+          <!-- Dashed arrows: king - man + woman = queen -->
+          <line x1="150" y1="60" x2="130" y2="110" stroke="var(--color-clay)" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+          <line x1="130" y1="110" x2="180" y2="108" stroke="var(--color-clay)" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+          <line x1="180" y1="108" x2="200" y2="53" stroke="var(--color-clay)" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+          <text x="108" y="88" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" opacity="0.7">-man</text>
+          <text x="160" y="125" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" opacity="0.7">+woman</text>
+          <text x="205" y="82" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" opacity="0.7">=queen</text>
+          <!-- Cat / Dog cluster -->
+          <circle cx="240" cy="190" r="5" fill="rgba(18,18,18,0.08)" stroke="rgba(18,18,18,0.25)" stroke-width="1"/>
+          <text x="253" y="187" font-family="Inter,sans-serif" font-size="11" fill="var(--color-ink)" font-weight="500">cat</text>
+          <circle cx="275" cy="200" r="5" fill="rgba(18,18,18,0.08)" stroke="rgba(18,18,18,0.25)" stroke-width="1"/>
+          <text x="288" y="197" font-family="Inter,sans-serif" font-size="11" fill="var(--color-ink)" font-weight="500">dog</text>
+          <!-- Cluster circles (faint) -->
+          <ellipse cx="170" cy="80" rx="70" ry="55" fill="none" stroke="rgba(176,141,120,0.12)" stroke-width="1" stroke-dasharray="3 3"/>
+          <ellipse cx="258" cy="195" rx="40" ry="25" fill="none" stroke="rgba(18,18,18,0.06)" stroke-width="1" stroke-dasharray="3 3"/>
+        </svg>
+        <p class="caption">Every word gets converted into a list of numbers &mdash; a vector. These vectors capture meaning, context, relationships. Similar words live near each other in this space.</p>
+      </div>
+      <!-- RIGHT: Attention / Transformers -->
+      <div class="dtl-col">
+        <div class="mono-sm">Attention</div>
+        <div class="divider"></div>
+        <h3>Transformers</h3>
+        <svg viewBox="0 0 360 260" fill="none" style="width:100%;max-width:360px">
+          <!-- Sentence words -->
+          <text x="30" y="45" font-family="Fraunces,serif" font-size="16" fill="var(--color-ink)" font-weight="300">The</text>
+          <text x="75" y="45" font-family="Fraunces,serif" font-size="16" fill="var(--color-ink)" font-weight="300">cat</text>
+          <text x="120" y="45" font-family="Fraunces,serif" font-size="16" fill="var(--color-ink)" font-weight="300">sat</text>
+          <text x="165" y="45" font-family="Fraunces,serif" font-size="16" fill="var(--color-ink)" font-weight="300">on</text>
+          <text x="200" y="45" font-family="Fraunces,serif" font-size="16" fill="var(--color-ink)" font-weight="300">the</text>
+          <!-- Blank/prediction -->
+          <rect x="240" y="28" width="48" height="24" fill="rgba(176,141,120,0.1)" stroke="var(--color-clay)" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <text x="264" y="45" font-family="Fraunces,serif" font-size="16" fill="var(--color-clay)" font-weight="400" text-anchor="middle">___</text>
+          <!-- Attention lines from words to blank -->
+          <!-- "The" -> blank: very faint -->
+          <line x1="42" y1="52" x2="255" y2="52" stroke="var(--color-clay)" stroke-width="0.5" opacity="0.1"/>
+          <!-- "cat" -> blank: thick -->
+          <line x1="88" y1="52" x2="255" y2="52" stroke="var(--color-clay)" stroke-width="3" opacity="0.5"/>
+          <!-- "sat" -> blank: medium -->
+          <line x1="133" y1="52" x2="255" y2="52" stroke="var(--color-clay)" stroke-width="1.8" opacity="0.3"/>
+          <!-- "on" -> blank: thin -->
+          <line x1="177" y1="52" x2="255" y2="52" stroke="var(--color-clay)" stroke-width="0.8" opacity="0.15"/>
+          <!-- "the" -> blank: faint -->
+          <line x1="213" y1="52" x2="255" y2="52" stroke="var(--color-clay)" stroke-width="0.5" opacity="0.1"/>
+          <!-- Weight bars below -->
+          <text x="170" y="85" font-family="JetBrains Mono,monospace" font-size="8" fill="var(--color-muted)" text-anchor="middle" letter-spacing="1.5">ATTENTION WEIGHTS</text>
+          <g transform="translate(30,95)">
+            <!-- The -->
+            <rect x="0" y="0" width="30" height="6" fill="rgba(176,141,120,0.08)" stroke="none"/>
+            <text x="15" y="18" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-muted)" text-anchor="middle">The</text>
+            <text x="15" y="27" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(176,141,120,0.4)" text-anchor="middle">0.03</text>
+            <!-- cat -->
+            <rect x="50" y="0" width="30" height="6" fill="rgba(176,141,120,0.7)" stroke="none"/>
+            <text x="65" y="18" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" text-anchor="middle" font-weight="500">cat</text>
+            <text x="65" y="27" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-clay)" text-anchor="middle">0.62</text>
+            <!-- sat -->
+            <rect x="100" y="0" width="30" height="6" fill="rgba(176,141,120,0.35)" stroke="none"/>
+            <text x="115" y="18" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-muted)" text-anchor="middle">sat</text>
+            <text x="115" y="27" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(176,141,120,0.5)" text-anchor="middle">0.21</text>
+            <!-- on -->
+            <rect x="150" y="0" width="30" height="6" fill="rgba(176,141,120,0.15)" stroke="none"/>
+            <text x="165" y="18" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-muted)" text-anchor="middle">on</text>
+            <text x="165" y="27" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(176,141,120,0.4)" text-anchor="middle">0.09</text>
+            <!-- the -->
+            <rect x="200" y="0" width="30" height="6" fill="rgba(176,141,120,0.08)" stroke="none"/>
+            <text x="215" y="18" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-muted)" text-anchor="middle">the</text>
+            <text x="215" y="27" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(176,141,120,0.4)" text-anchor="middle">0.05</text>
+          </g>
+          <!-- Prediction result -->
+          <g transform="translate(0,160)">
+            <rect x="80" y="0" width="200" height="36" fill="rgba(176,141,120,0.06)" stroke="rgba(176,141,120,0.15)" stroke-width="1"/>
+            <text x="180" y="15" font-family="JetBrains Mono,monospace" font-size="7" fill="var(--color-muted)" text-anchor="middle" letter-spacing="1.5">PREDICTION</text>
+            <text x="180" y="30" font-family="Fraunces,serif" font-size="16" fill="var(--color-clay)" text-anchor="middle" font-style="italic">"mat" (p=0.73)</text>
+          </g>
+        </svg>
+        <p class="caption">Transformers look at all words simultaneously and learn which ones matter most for predicting the next. This "attention" mechanism is what makes modern AI understand language.</p>
+      </div>
+      <!-- Bottom note -->
+      <div class="dtl-bottom-note">
+        <div class="mono-sm">Same principle as digit recognition &mdash; just billions of parameters, trained on the entire internet.</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
+<!-- ===== SLIDE 5: AI is not human / Curse of Vibe ===== -->
+<div class="slide" id="slide-5">
+  <div class="slide-header"><span class="mono-label">The Takeaway</span><span class="slide-number">05 / 08</span></div>
   <div class="slide-content">
     <div class="corner-accents"></div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:32px;max-width:680px;text-align:center">
@@ -431,9 +546,9 @@
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
 </div>
 
-<!-- ===== SLIDE 5: Learning Analogy (Synapse Comparison) ===== -->
-<div class="slide" id="slide-5">
-  <div class="slide-header"><span class="mono-label">The Learning Analogy</span><span class="slide-number">05 / 06</span></div>
+<!-- ===== SLIDE 6: Learning Analogy (Synapse Comparison) ===== -->
+<div class="slide" id="slide-6">
+  <div class="slide-header"><span class="mono-label">The Learning Analogy</span><span class="slide-number">06 / 08</span></div>
   <div class="slide-content">
     <div class="corner-accents"></div>
     <div class="synapse-layout">
@@ -508,9 +623,9 @@
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
 </div>
 
-<!-- ===== SLIDE 6: Principles ===== -->
-<div class="slide" id="slide-6">
-  <div class="slide-header"><span class="mono-label">The Principles</span><span class="slide-number">06 / 06</span></div>
+<!-- ===== SLIDE 7: Principles ===== -->
+<div class="slide" id="slide-7">
+  <div class="slide-header"><span class="mono-label">The Principles</span><span class="slide-number">07 / 08</span></div>
   <div class="slide-content">
     <div class="corner-accents"></div>
     <div class="principles-layout">
@@ -527,6 +642,50 @@
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
 </div>
 
+<!-- ===== SLIDE 8: Why Claude Code ===== -->
+<div class="slide" id="slide-8">
+  <div class="slide-header"><span class="mono-label">The Tool</span><span class="slide-number">08 / 08</span></div>
+  <div class="slide-content">
+    <div class="corner-accents"></div>
+    <div class="claude-layout">
+      <div class="mono-sm">The Tool</div>
+      <div class="divider" style="margin:0 auto"></div>
+      <h2>Why <span class="clay italic">Claude Code</span></h2>
+
+      <div class="terminal-card">
+        <span class="ca-tl"></span><span class="ca-br"></span>
+        <div class="terminal-dots">
+          <div class="terminal-dot" style="background:#ff5f57;opacity:0.7"></div>
+          <div class="terminal-dot" style="background:#ffbd2e;opacity:0.7"></div>
+          <div class="terminal-dot" style="background:#27c93f;opacity:0.7"></div>
+        </div>
+        <div class="terminal-prompt">$ claude "deploy my app to vercel"</div>
+        <ul class="terminal-list">
+          <li>
+            <span class="tl-label">Terminal-Native</span>
+            <span class="tl-desc">Runs where your code lives. Direct access to your filesystem, tools, and environment.</span>
+          </li>
+          <li>
+            <span class="tl-label">Full Computer Access</span>
+            <span class="tl-desc">Reads your codebase, runs commands, installs dependencies, manages packages, deploys.</span>
+          </li>
+          <li>
+            <span class="tl-label">Project Context</span>
+            <span class="tl-desc">Understands your actual files and codebase structure. No copy-pasting into a chat window.</span>
+          </li>
+          <li>
+            <span class="tl-label">Executes, Not Suggests</span>
+            <span class="tl-desc">Doesn't just tell you what to do &mdash; it does it. Install, test, commit, push, deploy.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="claude-tagline">The terminal is the most powerful interface on your computer. Claude Code uses it.</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
+</div>
+
 <!-- Nav -->
 <div class="nav-dots">
   <div class="nav-dot active" onclick="goToSlide(0)"></div>
@@ -536,14 +695,16 @@
   <div class="nav-dot" onclick="goToSlide(4)"></div>
   <div class="nav-dot" onclick="goToSlide(5)"></div>
   <div class="nav-dot" onclick="goToSlide(6)"></div>
+  <div class="nav-dot" onclick="goToSlide(7)"></div>
+  <div class="nav-dot" onclick="goToSlide(8)"></div>
 </div>
 <div class="nav-hint">&larr; &rarr; to navigate</div>
 
 <script>
 let cur = 0, sub = 0;
-const TOTAL = 7;
+const TOTAL = 9;
 // Slide 1: 1 sub-step (NL insert), Slide 3: 5 sub-steps (NN backprop)
-const SUB = {0:0, 1:1, 2:0, 3:5, 4:0, 5:0, 6:0};
+const SUB = {0:0, 1:1, 2:0, 3:5, 4:0, 5:0, 6:0, 7:0, 8:0};
 let timers = [];
 let nlShown = false;
 

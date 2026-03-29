@@ -230,6 +230,49 @@
 
     <p>The network is finding statistical patterns in data — nothing more, nothing less. When you scale this up massively — billions of parameters, trained on the entire internet's worth of text — you get something like Claude or ChatGPT. It feels human. It writes eloquently. It can code. But underneath, it's the same fundamental process: pattern matching through weighted connections, refined by feedback.</p>
 
+    <h3>Hebb's Rule: "Neurons That Fire Together, Wire Together"</h3>
+
+    <p>There's a neuroscience principle from 1949 called Hebb's Rule that puts this beautifully: <strong>"Neurons that fire together, wire together."</strong> When two neurons activate at the same time, repeatedly, the synapse between them gets stronger. This is the biological basis for learning &mdash; and it's exactly what backpropagation does artificially.</p>
+
+    <p>When you teach a baby that the written shape "3" is the number three, the neurons that recognize that particular curve pattern and the neurons that represent "three" fire together. Over time, that connection strengthens. The baby doesn't have to think about it anymore &mdash; it just <em>knows</em>.</p>
+
+    <p>In an artificial neural network, backpropagation does the same thing. When the correct pathway fires and produces the right answer, the weights along that pathway get strengthened. When the wrong pathway fires, those weights get weakened. It's Hebbian learning, implemented in mathematics.</p>
+
+    <p>This is why AI is glorified statistics. There's no understanding &mdash; just connections that got strengthened because they co-fired with the right answer enough times.</p>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== -->
+    <!-- SLIDE 4               -->
+    <!-- ===================== -->
+
+    <h2>Slide 4: From Digits to Language &mdash; Embeddings &amp; Transformers</h2>
+    <div class="stage-direction">Bridging the gap &mdash; 3-4 minutes</div>
+
+    <p>OK so now you understand how a neural network learns to recognize handwritten numbers. But there's a pretty big gap between recognizing a digit and writing code or having a conversation. How did we get from there to Claude and ChatGPT?</p>
+
+    <p>The answer comes in two key innovations.</p>
+
+    <h3>Words as Numbers &mdash; Embedding Matrices</h3>
+
+    <p>The first challenge: computers only understand numbers. So how do you feed <em>words</em> into a neural network? You convert them.</p>
+
+    <p>Every word gets turned into a list of numbers &mdash; a vector &mdash; called an <strong>embedding</strong>. But these aren't random numbers. They're learned, just like the weights in a neural network. And they capture something remarkable: <strong>meaning.</strong></p>
+
+    <p>Words with similar meanings end up with similar numbers. "King" and "queen" are close together. "Cat" and "dog" are close together. And the relationships are mathematical: king minus man plus woman roughly equals queen. The math captures the semantics.</p>
+
+    <p>These embeddings don't just capture what a word means &mdash; they capture how it's used, when it's used, what context it appears in. The entire richness of language, compressed into numbers.</p>
+
+    <h3>Transformers &mdash; Attention Is All You Need</h3>
+
+    <p>The second innovation: once you have words as numbers, how does the model know which words in a sentence matter most?</p>
+
+    <p>If I say "The cat sat on the ___" &mdash; you know the answer is probably "mat" or "floor." You know that because "cat" and "sat" give you the most information. "The" and "on" are basically noise for prediction purposes.</p>
+
+    <p>Transformers figure this out through something called <strong>attention</strong>. The model learns to assign different weights to different words in the input, focusing on the ones that are most relevant for predicting what comes next.</p>
+
+    <p>This is the architecture behind Claude, ChatGPT, and every modern language model. It's the same fundamental principle as the neural network we just walked through &mdash; feed in data, make a guess, calculate error, adjust weights, repeat. Just scaled up to billions of parameters, trained on the entire internet.</p>
+
     <div class="section-divider"></div>
 
     <!-- ===================== -->
@@ -292,15 +335,36 @@
 
     <div class="section-divider"></div>
 
+    <h2>Slide 8: Why Claude Code</h2>
+    <div class="stage-direction">The tool — 2-3 minutes</div>
+
+    <p>So in the next sessions we're going to actually build something. And the tool we're going to use is Claude Code. Let me briefly tell you why it's my favorite AI coding agent.</p>
+
+    <p>Most AI coding tools run in a browser — you paste code in, get suggestions back, copy them out. Claude Code is different. It runs in your <strong>terminal.</strong></p>
+
+    <p>Why does that matter? The terminal is the most powerful interface on your computer. It has direct access to your filesystem, your tools, your entire environment. When Claude Code runs in your terminal, it can actually <em>do things</em> for you.</p>
+
+    <p>It can read your entire codebase — not just a file you pasted in. It understands the structure, the patterns, the conventions.</p>
+
+    <p>It can run commands. Install dependencies. Manage packages. Run your tests.</p>
+
+    <p>It can deploy for you — we literally just used it to push to GitHub and deploy to Vercel without leaving the conversation.</p>
+
+    <p>It doesn't just suggest — it <strong>executes</strong>. That's the difference between a chatbot and an agent.</p>
+
+    <p>In our next sessions, you'll see this in action. We'll build real applications, and you'll see how having an AI that can actually touch your computer changes everything.</p>
+
+    <div class="section-divider"></div>
+
     <h3>Closing</h3>
     <div class="stage-direction">1 minute</div>
 
-    <p>In our next sessions, we're going to put these principles into practice. We'll open up a coding agent, start building something real, and you'll see firsthand how being specific, understanding your problem, iterating aggressively, and providing rich context leads to genuinely impressive results.</p>
+    <p>In our next sessions, we're going to put these principles into practice. We'll open up Claude Code, start building something real, and you'll see firsthand how being specific, understanding your problem, iterating aggressively, and providing rich context leads to genuinely impressive results.</p>
 
     <p>For now — remember: it's never been easier to build. But building well still requires intention. That's what we're here to learn.</p>
 
     <div class="divider" style="margin-top: 32px;"></div>
-    <p class="time-note">Total estimated time: 14-17 minutes</p>
+    <p class="time-note">Total estimated time: 22-28 minutes</p>
 
   </div>
 </body>
