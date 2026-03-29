@@ -350,121 +350,184 @@
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
 </div>
 
-<!-- ===== SLIDE 4: Training a Neural Network (Pixel Grid) ===== -->
+<!-- ===== SLIDE 4: Training a Neural Network (Pixel Grid + NN Diagram) ===== -->
 <div class="slide" id="slide-4">
   <div class="slide-header"><span class="mono-label">The Artificial Version</span><span class="slide-number">04 / 09</span></div>
-  <div class="slide-content">
+  <div class="slide-content" style="padding:32px 48px">
     <div class="corner-accents"></div>
-    <div class="grid-2col" style="gap:48px;align-items:start;max-width:1050px">
-      <!-- LEFT: Pixel grid input -->
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <div class="mono-sm">The input &mdash; pixels</div>
-        <div class="divider"></div>
-        <p style="font-size:13px;color:var(--color-muted);line-height:1.5">Goal: teach a computer to recognize a handwritten <strong style="color:var(--color-ink)">3</strong>. The input is grayscale pixel values.</p>
-        <!-- Main pixel grid -->
-        <div id="pixel-grid" style="display:grid;grid-template-columns:repeat(5,42px);grid-template-rows:repeat(7,42px);gap:2px;justify-content:center;transition:opacity 0.5s ease">
-          <!-- Row 1: .###. -->
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
-          <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
-          <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <!-- Row 2: ...#. -->
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
-          <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <!-- Row 3: .##. -->
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.2" style="background:rgba(18,18,18,0.13)"><span class="px-val">0.2</span></div>
-          <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
-          <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <!-- Row 4: ...#. -->
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <!-- Row 5: ...#. -->
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
-          <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <!-- Row 6: .#.#. -->
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.6" style="background:rgba(18,18,18,0.45)"><span class="px-val" style="color:#F8F7F4">0.6</span></div>
-          <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
-          <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <!-- Row 7: .###. -->
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-          <div class="px" data-v="0.7" style="background:rgba(18,18,18,0.55)"><span class="px-val" style="color:#F8F7F4">0.7</span></div>
-          <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
-          <div class="px" data-v="0.7" style="background:rgba(18,18,18,0.55)"><span class="px-val" style="color:#F8F7F4">0.7</span></div>
-          <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
-        </div>
-        <div class="mono-sm" style="text-align:center;font-size:8px;opacity:0.5">5 &times; 7 PIXEL GRID &mdash; GRAYSCALE VALUES 0.0 (WHITE) TO 1.0 (BLACK)</div>
-        <!-- Small example 3s -->
-        <div style="display:flex;gap:16px;justify-content:center;align-items:center;margin-top:4px">
-          <div class="mono-sm" style="font-size:8px">Other 3s:</div>
-          <svg width="35" height="49" viewBox="0 0 5 7"><rect x="1" y="0" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="2" y="0" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="3" y="0" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="3" y="1" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="2" y="2" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="3" y="2" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="3" y="3" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="4" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="1" y="5" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="3" y="5" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="1" y="6" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="2" y="6" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="6" width="1" height="1" fill="rgba(18,18,18,0.5)"/></svg>
-          <svg width="35" height="49" viewBox="0 0 5 7"><rect x="0" y="0" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="1" y="0" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="2" y="0" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="0" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="3" y="1" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="2" y="1" width="1" height="1" fill="rgba(18,18,18,0.3)"/><rect x="1" y="2" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="2" y="2" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="3" y="3" width="1" height="1" fill="rgba(18,18,18,0.85)"/><rect x="3" y="4" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="2" y="4" width="1" height="1" fill="rgba(18,18,18,0.3)"/><rect x="0" y="5" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="3" y="5" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="1" y="6" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="2" y="6" width="1" height="1" fill="rgba(18,18,18,0.85)"/><rect x="3" y="6" width="1" height="1" fill="rgba(18,18,18,0.4)"/></svg>
-          <svg width="35" height="49" viewBox="0 0 5 7"><rect x="1" y="0" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="2" y="0" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="0" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="4" y="1" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="3" y="1" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="2" y="2" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="3" y="2" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="4" y="3" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="3" width="1" height="1" fill="rgba(18,18,18,0.3)"/><rect x="4" y="4" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="3" y="5" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="4" y="5" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="1" y="6" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="2" y="6" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="6" width="1" height="1" fill="rgba(18,18,18,0.7)"/></svg>
-        </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;max-width:1100px">
+      <div style="text-align:center">
+        <div class="mono-sm" style="margin-bottom:8px">Same principle, in a computer</div>
+        <div class="divider" style="margin:0 auto 10px"></div>
+        <h2 style="font-size:34px">Training a Neural Network</h2>
       </div>
 
-      <!-- RIGHT: Training loop -->
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <div class="mono-sm">The training loop</div>
-        <div class="divider"></div>
-        <h3 style="font-size:24px">Training a Neural Network</h3>
-
-        <!-- Animated area -->
-        <div id="train-area" style="display:flex;flex-direction:column;gap:16px;min-height:280px">
-          <!-- Step indicator -->
-          <div id="train-msg" style="font-size:14px;color:var(--color-muted);line-height:1.55;min-height:60px">
-            We feed the pixel values into the network. Each pixel is a number &mdash; dark pixels are close to 1.0, light pixels close to 0.0.
+      <!-- Main visual: Pixel Grid → NN → Output -->
+      <div style="display:flex;align-items:center;gap:20px;width:100%">
+        <!-- Pixel grid (compact) -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0">
+          <div class="mono-sm" style="font-size:7px">Input Pixels</div>
+          <div id="pixel-grid" style="display:grid;grid-template-columns:repeat(5,30px);grid-template-rows:repeat(7,30px);gap:1px">
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
+            <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
+            <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
+            <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.2" style="background:rgba(18,18,18,0.13)"><span class="px-val">0.2</span></div>
+            <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
+            <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
+            <div class="px" data-v="0.9" style="background:rgba(18,18,18,0.72)"><span class="px-val" style="color:#F8F7F4">0.9</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.6" style="background:rgba(18,18,18,0.45)"><span class="px-val" style="color:#F8F7F4">0.6</span></div>
+            <div class="px" data-v="0.1" style="background:rgba(18,18,18,0.06)"><span class="px-val">0.1</span></div>
+            <div class="px" data-v="0.8" style="background:rgba(18,18,18,0.62)"><span class="px-val" style="color:#F8F7F4">0.8</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
+            <div class="px" data-v="0.7" style="background:rgba(18,18,18,0.55)"><span class="px-val" style="color:#F8F7F4">0.7</span></div>
+            <div class="px" data-v="1.0" style="background:rgba(18,18,18,0.85)"><span class="px-val" style="color:#F8F7F4">1.0</span></div>
+            <div class="px" data-v="0.7" style="background:rgba(18,18,18,0.55)"><span class="px-val" style="color:#F8F7F4">0.7</span></div>
+            <div class="px" data-v="0.0" style="background:rgba(18,18,18,0.03)"><span class="px-val">0.0</span></div>
           </div>
+          <div class="mono-sm" style="font-size:7px;opacity:0.4">35 PIXELS = 35 NEURONS</div>
+          <!-- Mini example 3s -->
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="mono-sm" style="font-size:6px;opacity:0.4">VARIANTS:</span>
+            <svg width="25" height="35" viewBox="0 0 5 7"><rect x="1" y="0" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="2" y="0" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="3" y="0" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="3" y="1" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="2" y="2" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="3" y="2" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="3" y="3" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="4" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="1" y="5" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="3" y="5" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="1" y="6" width="1" height="1" fill="rgba(18,18,18,0.6)"/><rect x="2" y="6" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="6" width="1" height="1" fill="rgba(18,18,18,0.5)"/></svg>
+            <svg width="25" height="35" viewBox="0 0 5 7"><rect x="0" y="0" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="1" y="0" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="2" y="0" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="3" y="0" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="3" y="1" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="1" y="2" width="1" height="1" fill="rgba(18,18,18,0.5)"/><rect x="2" y="2" width="1" height="1" fill="rgba(18,18,18,0.8)"/><rect x="3" y="3" width="1" height="1" fill="rgba(18,18,18,0.85)"/><rect x="3" y="4" width="1" height="1" fill="rgba(18,18,18,0.9)"/><rect x="0" y="5" width="1" height="1" fill="rgba(18,18,18,0.4)"/><rect x="3" y="5" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="1" y="6" width="1" height="1" fill="rgba(18,18,18,0.7)"/><rect x="2" y="6" width="1" height="1" fill="rgba(18,18,18,0.85)"/></svg>
+          </div>
+        </div>
 
-          <!-- Guess display -->
-          <div style="display:flex;gap:16px;align-items:center">
-            <div style="flex:1">
-              <div class="mono-sm" style="font-size:8px;margin-bottom:6px">Network's Guess</div>
-              <div id="train-guess" style="font-family:var(--font-serif);font-size:56px;font-weight:300;color:rgba(18,18,18,0.15);line-height:1">?</div>
+        <!-- Arrow -->
+        <div style="font-family:var(--font-mono);font-size:18px;color:var(--color-clay);opacity:0.4;flex-shrink:0">&rarr;</div>
+
+        <!-- Neural network diagram (simplified, shows flow) -->
+        <svg id="nn-flow" viewBox="0 0 340 220" fill="none" style="flex:1;max-width:380px;min-width:260px">
+          <!-- Input neuron indicators (7 dots representing pixel rows) -->
+          <g id="nn-input-dots">
+            <circle cx="20" cy="20" r="5" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-id"/>
+            <circle cx="20" cy="50" r="5" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-id"/>
+            <circle cx="20" cy="80" r="5" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-id"/>
+            <circle cx="20" cy="110" r="5" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-id"/>
+            <circle cx="20" cy="140" r="5" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-id"/>
+            <circle cx="20" cy="170" r="5" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-id"/>
+            <circle cx="20" cy="200" r="5" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-id"/>
+          </g>
+          <!-- Connections input→hidden1 -->
+          <g id="nn-conn1" opacity="0.05">
+            <line x1="25" y1="20" x2="105" y2="40" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="20" x2="105" y2="80" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="20" x2="105" y2="120" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="20" x2="105" y2="160" stroke="#121212" stroke-width="0.4"/>
+            <line x1="25" y1="80" x2="105" y2="40" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="80" x2="105" y2="80" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="80" x2="105" y2="120" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="80" x2="105" y2="160" stroke="#121212" stroke-width="0.4"/>
+            <line x1="25" y1="140" x2="105" y2="40" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="140" x2="105" y2="80" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="140" x2="105" y2="120" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="140" x2="105" y2="160" stroke="#121212" stroke-width="0.4"/>
+            <line x1="25" y1="200" x2="105" y2="40" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="200" x2="105" y2="80" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="200" x2="105" y2="120" stroke="#121212" stroke-width="0.4"/><line x1="25" y1="200" x2="105" y2="160" stroke="#121212" stroke-width="0.4"/>
+          </g>
+          <!-- Hidden layer 1 -->
+          <g id="nn-h1">
+            <circle cx="110" cy="40" r="6" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+            <circle cx="110" cy="80" r="6" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+            <circle cx="110" cy="120" r="6" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+            <circle cx="110" cy="160" r="6" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          </g>
+          <!-- Connections hidden1→hidden2 -->
+          <g id="nn-conn2" opacity="0.04">
+            <line x1="116" y1="40" x2="195" y2="60" stroke="#B08D78" stroke-width="0.4"/><line x1="116" y1="40" x2="195" y2="110" stroke="#B08D78" stroke-width="0.4"/><line x1="116" y1="40" x2="195" y2="160" stroke="#B08D78" stroke-width="0.4"/>
+            <line x1="116" y1="80" x2="195" y2="60" stroke="#B08D78" stroke-width="0.4"/><line x1="116" y1="80" x2="195" y2="110" stroke="#B08D78" stroke-width="0.4"/><line x1="116" y1="80" x2="195" y2="160" stroke="#B08D78" stroke-width="0.4"/>
+            <line x1="116" y1="120" x2="195" y2="60" stroke="#B08D78" stroke-width="0.4"/><line x1="116" y1="120" x2="195" y2="110" stroke="#B08D78" stroke-width="0.4"/><line x1="116" y1="120" x2="195" y2="160" stroke="#B08D78" stroke-width="0.4"/>
+            <line x1="116" y1="160" x2="195" y2="60" stroke="#B08D78" stroke-width="0.4"/><line x1="116" y1="160" x2="195" y2="110" stroke="#B08D78" stroke-width="0.4"/><line x1="116" y1="160" x2="195" y2="160" stroke="#B08D78" stroke-width="0.4"/>
+          </g>
+          <!-- Hidden layer 2 -->
+          <g id="nn-h2">
+            <circle cx="200" cy="60" r="6" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+            <circle cx="200" cy="110" r="6" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+            <circle cx="200" cy="160" r="6" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" class="nn-hn"/>
+          </g>
+          <!-- Connections hidden2→output -->
+          <g id="nn-conn3" opacity="0.04">
+            <line x1="206" y1="60" x2="280" y2="110" stroke="#B08D78" stroke-width="0.4"/>
+            <line x1="206" y1="110" x2="280" y2="110" stroke="#B08D78" stroke-width="0.4"/>
+            <line x1="206" y1="160" x2="280" y2="110" stroke="#B08D78" stroke-width="0.4"/>
+          </g>
+          <!-- Trained highlight connections (hidden initially) -->
+          <g id="nn-strong" opacity="0">
+            <line x1="116" y1="80" x2="195" y2="110" stroke="#B08D78" stroke-width="2.5" opacity="0.6"/>
+            <line x1="116" y1="120" x2="195" y2="110" stroke="#B08D78" stroke-width="2" opacity="0.5"/>
+            <line x1="206" y1="110" x2="280" y2="110" stroke="#B08D78" stroke-width="3" opacity="0.7"/>
+          </g>
+          <!-- Output node -->
+          <g id="nn-output">
+            <rect x="270" y="96" width="50" height="28" fill="none" stroke="rgba(18,18,18,0.12)" stroke-width="0.5" id="nn-out-box"/>
+            <text x="295" y="114" font-family="Fraunces,serif" font-size="18" fill="rgba(18,18,18,0.15)" text-anchor="middle" id="nn-out-text">?</text>
+          </g>
+          <!-- Layer labels -->
+          <text x="20" y="215" font-family="JetBrains Mono,monospace" font-size="6" fill="rgba(18,18,18,0.3)" text-anchor="middle" letter-spacing="1">35 INPUTS</text>
+          <text x="110" y="180" font-family="JetBrains Mono,monospace" font-size="6" fill="rgba(18,18,18,0.3)" text-anchor="middle" letter-spacing="1">HIDDEN 1</text>
+          <text x="200" y="180" font-family="JetBrains Mono,monospace" font-size="6" fill="rgba(18,18,18,0.3)" text-anchor="middle" letter-spacing="1">HIDDEN 2</text>
+          <text x="295" y="136" font-family="JetBrains Mono,monospace" font-size="6" fill="rgba(18,18,18,0.3)" text-anchor="middle" letter-spacing="1">OUTPUT</text>
+          <!-- Backprop arrow (hidden) -->
+          <g id="nn-bp-arrow" opacity="0">
+            <path d="M275 130 C260 155 160 170 30 190" stroke="var(--color-error)" stroke-width="1" fill="none" stroke-dasharray="4 3"/>
+            <text x="150" y="165" font-family="JetBrains Mono,monospace" font-size="6" fill="var(--color-error)" text-anchor="middle" letter-spacing="1">BACKPROPAGATION</text>
+          </g>
+        </svg>
+
+        <!-- Arrow -->
+        <div style="font-family:var(--font-mono);font-size:18px;color:var(--color-clay);opacity:0.4;flex-shrink:0">&rarr;</div>
+
+        <!-- Output + Feedback panel -->
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:180px;flex-shrink:0">
+          <div class="mono-sm" style="font-size:8px">Result</div>
+          <div style="display:flex;gap:20px;align-items:baseline">
+            <div>
+              <div class="mono-sm" style="font-size:7px;margin-bottom:4px">Guess</div>
+              <div id="train-guess" style="font-family:var(--font-serif);font-size:48px;font-weight:300;color:rgba(18,18,18,0.15);line-height:1">?</div>
             </div>
-            <div style="flex:1">
-              <div class="mono-sm" style="font-size:8px;margin-bottom:6px">Truth</div>
-              <div style="font-family:var(--font-serif);font-size:56px;font-weight:300;color:var(--color-clay);line-height:1;font-style:italic">3</div>
+            <div>
+              <div class="mono-sm" style="font-size:7px;margin-bottom:4px">Truth</div>
+              <div style="font-family:var(--font-serif);font-size:48px;font-weight:300;color:var(--color-clay);line-height:1;font-style:italic">3</div>
             </div>
           </div>
-
-          <!-- Loss / feedback area -->
           <div id="train-feedback" style="opacity:0;transition:opacity 0.4s ease">
-            <div class="insight-card" style="padding:16px;text-align:left">
+            <div class="insight-card" style="padding:12px;text-align:left">
               <span class="ca-tl"></span><span class="ca-br"></span>
-              <div id="train-fb-label" class="mono-sm" style="color:var(--color-error);margin-bottom:6px;font-size:8px">Loss Function</div>
-              <p id="train-fb-text" style="font-size:12px">Guessed 5, truth is 3. Error calculated. Now adjust the weights &mdash; strengthen the connections for pixels that define a "3."</p>
+              <div id="train-fb-label" class="mono-sm" style="color:var(--color-error);margin-bottom:4px;font-size:7px">Loss Function</div>
+              <p id="train-fb-text" style="font-size:11px;line-height:1.45">Guessed 5, truth is 3.</p>
             </div>
           </div>
         </div>
-
-        <!-- Step buttons -->
-        <div class="nn-bottom-row" id="nn-steps">
-          <div class="nn-step step-active" id="nn-step-1"><div class="nn-step-num">1</div><span class="nn-step-text">Feed data</span></div>
-          <span class="nn-step-arrow">&rarr;</span>
-          <div class="nn-step" id="nn-step-2"><div class="nn-step-num">2</div><span class="nn-step-text">Guess</span></div>
-          <span class="nn-step-arrow">&rarr;</span>
-          <div class="nn-step" id="nn-step-3"><div class="nn-step-num">3</div><span class="nn-step-text">Error</span></div>
-          <span class="nn-step-arrow">&rarr;</span>
-          <div class="nn-step" id="nn-step-4"><div class="nn-step-num">4</div><span class="nn-step-text">Adjust</span></div>
-          <span class="nn-step-arrow">&rarr;</span>
-          <div class="nn-step" id="nn-step-5"><div class="nn-step-num" style="font-size:14px">&infin;</div><span class="nn-step-text">Repeat</span></div>
-        </div>
-        <div class="nn-hint" id="nn-hint">Press &rarr; to step through</div>
       </div>
+
+      <!-- Narrative text -->
+      <div id="train-msg" style="font-size:13px;color:var(--color-muted);line-height:1.5;text-align:center;max-width:800px;min-height:36px">
+        Each of the 35 pixels becomes its own artificial neuron. The grayscale value is the input. Dark pixels (high values) carry the shape of the "3."
+      </div>
+
+      <!-- Step buttons -->
+      <div class="nn-bottom-row" id="nn-steps">
+        <div class="nn-step step-active" id="nn-step-1"><div class="nn-step-num">1</div><span class="nn-step-text">Feed data</span></div>
+        <span class="nn-step-arrow">&rarr;</span>
+        <div class="nn-step" id="nn-step-2"><div class="nn-step-num">2</div><span class="nn-step-text">Guess</span></div>
+        <span class="nn-step-arrow">&rarr;</span>
+        <div class="nn-step" id="nn-step-3"><div class="nn-step-num">3</div><span class="nn-step-text">Error</span></div>
+        <span class="nn-step-arrow">&rarr;</span>
+        <div class="nn-step" id="nn-step-4"><div class="nn-step-num">4</div><span class="nn-step-text">Adjust</span></div>
+        <span class="nn-step-arrow">&rarr;</span>
+        <div class="nn-step" id="nn-step-5"><div class="nn-step-num" style="font-size:14px">&infin;</div><span class="nn-step-text">Repeat</span></div>
+      </div>
+      <div class="nn-hint" id="nn-hint">Press &rarr; to step through</div>
     </div>
   </div>
   <div class="slide-footer"><span class="mono-label">Vibe Coding 1.1</span><span class="mono-label">Scott's Scholar Supper Series</span></div>
@@ -755,8 +818,9 @@ function revealNL() {
   nlShown = true;
 }
 
-// ===== NN Training Animation (Pixel Grid) =====
+// ===== NN Training Animation (Pixel Grid + NN Flow) =====
 function setActive(n) { for(let i=1;i<=5;i++) document.getElementById(`nn-step-${i}`).classList.toggle('step-active',i===n); }
+function nnOp(id,v,ms) { const e=document.getElementById(id); if(e){e.style.transition=`opacity ${ms}ms ease`;e.setAttribute('opacity',v);} }
 
 function initNN() {
   clr(); setActive(1);
@@ -764,74 +828,91 @@ function initNN() {
   document.getElementById('train-guess').textContent='?';
   document.getElementById('train-guess').style.color='rgba(18,18,18,0.15)';
   document.getElementById('train-feedback').style.opacity='0';
-  document.getElementById('train-msg').textContent='We feed the pixel values into the network. Each pixel is a number \u2014 dark pixels are close to 1.0, light pixels close to 0.0.';
-  document.querySelectorAll('#pixel-grid .px').forEach(p=>p.classList.remove('highlight'));
-  document.getElementById('pixel-grid').style.opacity='1';
+  document.getElementById('train-msg').textContent='Each of the 35 pixels becomes its own artificial neuron. The grayscale value is the input. Dark pixels (high values) carry the shape of the "3."';
+  document.querySelectorAll('#pixel-grid .px').forEach(p=>{p.classList.remove('highlight');p.style.borderColor='';p.style.boxShadow='';});
+  // Reset NN diagram
+  document.querySelectorAll('#nn-flow .nn-id').forEach(n=>{n.setAttribute('fill','none');n.setAttribute('stroke','rgba(18,18,18,0.12)');});
+  document.querySelectorAll('#nn-flow .nn-hn').forEach(n=>{n.setAttribute('fill','none');n.setAttribute('stroke','rgba(18,18,18,0.12)');});
+  ['nn-conn1','nn-conn2','nn-conn3'].forEach((id,i)=>{const g=document.getElementById(id);g.setAttribute('opacity',i===0?'0.05':'0.04');g.querySelectorAll('line').forEach(l=>l.setAttribute('stroke',i===0?'#121212':'#B08D78'));});
+  nnOp('nn-strong','0',0); nnOp('nn-bp-arrow','0',0);
+  document.getElementById('nn-out-box').setAttribute('fill','none');
+  document.getElementById('nn-out-box').setAttribute('stroke','rgba(18,18,18,0.12)');
+  document.getElementById('nn-out-text').setAttribute('fill','rgba(18,18,18,0.15)');
+  document.getElementById('nn-out-text').textContent='?';
 }
 
 function nnStep(s) {
   clr();
   if(s===1) {
-    // Feed data in - highlight pixels sequentially
     setActive(1);
     document.getElementById('nn-hint').style.opacity='0';
-    document.getElementById('train-msg').textContent='Feeding pixel data into the network. Each of these 35 values becomes an input. The dark pixels (high values) carry the shape of the "3."';
+    document.getElementById('train-msg').textContent='We feed the pixel values in. Each dark pixel sends a strong signal (high weight) into the network. The light pixels send almost nothing.';
+    // Light up pixels
     const pxs=document.querySelectorAll('#pixel-grid .px');
-    pxs.forEach((p,i)=>{
-      const t=setTimeout(()=>{
-        if(parseFloat(p.dataset.v)>0.4) p.classList.add('highlight');
-      },i*30);
-      timers.push(t);
-    });
+    pxs.forEach((p,i)=>{const t=setTimeout(()=>{if(parseFloat(p.dataset.v)>0.4)p.classList.add('highlight');},i*25);timers.push(t);});
+    // Light up input dots on NN
+    const dots=document.querySelectorAll('#nn-flow .nn-id');
+    dots.forEach((d,i)=>{const t=setTimeout(()=>{d.setAttribute('fill','rgba(176,141,120,0.15)');d.setAttribute('stroke','rgba(176,141,120,0.5)');},200+i*60);timers.push(t);});
+    // Sweep connections to hidden1
+    const t1=setTimeout(()=>{document.getElementById('nn-conn1').setAttribute('opacity','0.15');},600);timers.push(t1);
+    // Light up hidden1
+    const h1=document.querySelectorAll('#nn-h1 .nn-hn');
+    h1.forEach((n,i)=>{const t=setTimeout(()=>{n.setAttribute('fill','rgba(176,141,120,0.1)');n.setAttribute('stroke','rgba(176,141,120,0.4)');},800+i*80);timers.push(t);});
+    // Sweep to hidden2
+    const t2=setTimeout(()=>{document.getElementById('nn-conn2').setAttribute('opacity','0.12');},1100);timers.push(t2);
+    const h2=document.querySelectorAll('#nn-h2 .nn-hn');
+    h2.forEach((n,i)=>{const t=setTimeout(()=>{n.setAttribute('fill','rgba(176,141,120,0.1)');n.setAttribute('stroke','rgba(176,141,120,0.4)');},1300+i*80);timers.push(t);});
+    // Sweep to output
+    const t3=setTimeout(()=>{document.getElementById('nn-conn3').setAttribute('opacity','0.12');},1600);timers.push(t3);
   }
   if(s===2) {
-    // Random guess - wrong
     setActive(2);
-    document.getElementById('train-msg').textContent='The network processes the pixels through its layers and makes a guess. But the weights are random \u2014 it has no idea what a "3" looks like yet.';
-    const g=document.getElementById('train-guess');
-    g.textContent='5';
-    g.style.color='var(--color-error)';
-    g.style.fontSize='56px';
+    document.getElementById('train-msg').textContent='The data flows through the hidden layers. Each neuron applies its weight and passes the signal on. But the weights are random \u2014 so the output is wrong.';
+    const g=document.getElementById('train-guess');g.textContent='5';g.style.color='var(--color-error)';
+    document.getElementById('nn-out-text').textContent='5';
+    document.getElementById('nn-out-text').setAttribute('fill','#D97755');
+    document.getElementById('nn-out-box').setAttribute('stroke','#D97755');
   }
   if(s===3) {
-    // Calculate error
     setActive(3);
-    document.getElementById('train-msg').textContent='Wrong! It guessed 5, but the truth is 3. The loss function calculates exactly how wrong it was. Under the hood: linear regression and multivariable calculus.';
+    document.getElementById('train-msg').textContent='Wrong! It guessed 5, but the answer is 3. The loss function measures exactly how wrong it was. Under the hood: linear regression and multivariable calculus.';
     document.getElementById('train-feedback').style.opacity='1';
     document.getElementById('train-fb-label').textContent='LOSS FUNCTION';
     document.getElementById('train-fb-label').style.color='var(--color-error)';
-    document.getElementById('train-fb-text').textContent='Guessed: 5 | Truth: 3 \u2014 Error signal generated. The network now knows it was wrong and by how much.';
+    document.getElementById('train-fb-text').textContent='Guessed: 5 | Truth: 3 \u2014 Error signal generated.';
   }
   if(s===4) {
-    // Adjust weights - highlight key pixels
     setActive(4);
-    document.getElementById('train-msg').textContent='Backpropagation: go back through the network and adjust the weights. The dark pixels that form the "3" shape need stronger connections to the output "3."';
+    document.getElementById('train-msg').textContent='Backpropagation: go backward through the network and adjust the weights. The pixels that form the "3" shape need stronger connections. This is Hebb\u2019s rule \u2014 neurons that fire together, wire together.';
     document.getElementById('train-fb-label').textContent='ADJUSTING WEIGHTS';
     document.getElementById('train-fb-label').style.color='var(--color-clay)';
-    document.getElementById('train-fb-text').textContent='Strengthen synapses for pixels that define the "3" pattern. Weaken connections that led to "5." This is Hebb\u2019s rule in action \u2014 neurons that fire together, wire together.';
-    // Highlight the key "3" pixels in clay
-    const pxs=document.querySelectorAll('#pixel-grid .px');
-    pxs.forEach((p,i)=>{
-      const v=parseFloat(p.dataset.v);
-      if(v>0.4){
-        const t=setTimeout(()=>{
-          p.style.borderColor='#B08D78';
-          p.style.boxShadow='inset 0 0 0 2px rgba(176,141,120,0.5), 0 0 8px rgba(176,141,120,0.3)';
-        },i*25);
-        timers.push(t);
-      }
+    document.getElementById('train-fb-text').textContent='Strengthen connections for "3" pixels. Weaken connections that led to "5."';
+    // Show backprop arrow
+    nnOp('nn-bp-arrow','1',500);
+    // Pulse connections in error color then settle
+    ['nn-conn3','nn-conn2','nn-conn1'].forEach((id,i)=>{
+      const t=setTimeout(()=>{const g=document.getElementById(id);g.querySelectorAll('line').forEach(l=>l.setAttribute('stroke','#D97755'));g.setAttribute('opacity','0.2');},i*400);timers.push(t);
     });
+    const t=setTimeout(()=>{
+      ['nn-conn3','nn-conn2','nn-conn1'].forEach(id=>{const g=document.getElementById(id);g.querySelectorAll('line').forEach(l=>l.setAttribute('stroke','#B08D78'));g.setAttribute('opacity','0.1');});
+      nnOp('nn-bp-arrow','0',300);
+    },1800);timers.push(t);
+    // Highlight key pixels in clay
+    const pxs=document.querySelectorAll('#pixel-grid .px');
+    pxs.forEach((p,i)=>{if(parseFloat(p.dataset.v)>0.4){const t2=setTimeout(()=>{p.style.borderColor='#B08D78';p.style.boxShadow='inset 0 0 0 2px rgba(176,141,120,0.5), 0 0 8px rgba(176,141,120,0.3)';},i*20);timers.push(t2);}});
   }
   if(s===5) {
-    // Repeat - correct output
     setActive(5);
-    document.getElementById('train-msg').textContent='After thousands of iterations with different handwritten 3s, the network learns which pixel patterns define a "3." It can now recognize any 3 \u2014 even one it\u2019s never seen.';
-    const g=document.getElementById('train-guess');
-    g.textContent='3';
-    g.style.color='var(--color-clay)';
+    document.getElementById('train-msg').textContent='After thousands of iterations with different 3s, the network learns which pixel patterns define a "3." It can now recognize any 3 \u2014 even one it\u2019s never seen. Glorified statistics.';
+    const g=document.getElementById('train-guess');g.textContent='3';g.style.color='var(--color-clay)';
+    document.getElementById('nn-out-text').textContent='3';
+    document.getElementById('nn-out-text').setAttribute('fill','#B08D78');
+    document.getElementById('nn-out-box').setAttribute('fill','rgba(176,141,120,0.15)');
+    document.getElementById('nn-out-box').setAttribute('stroke','#B08D78');
+    nnOp('nn-strong','1',600);
     document.getElementById('train-fb-label').textContent='TRAINED';
     document.getElementById('train-fb-label').style.color='var(--color-clay)';
-    document.getElementById('train-fb-text').textContent='The network knows: when these pixels are dark in this pattern, it\u2019s a 3. No understanding \u2014 just statistical correlations strengthened through repetition. Glorified statistics.';
+    document.getElementById('train-fb-text').textContent='The right pixels now have strong weights for predicting 3. No understanding \u2014 just statistics.';
   }
 }
 </script>
